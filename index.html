@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>간단한 페이지</title>
+<title>간단한 퀴즈 페이지</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -15,31 +15,91 @@
   #dog-image {
     display: none; /* 초기에는 강아지 사진을 숨깁니다. */
   }
+  #second-question {
+    display: none; /* 초기에는 두 번째 질문을 숨깁니다. */
+  }
+  #timer {
+    display: none; /* 초기에는 타이머를 숨깁니다. */
+  }
 </style>
 </head>
 <body>
   <h1>질문에 답해보세요!</h1>
   <div id="question-form">
-    <label for="answer">질문: 어떤 동물이 가장 사랑스러운가요?</label><br>
-    <input type="text" id="answer" name="answer">
-    <button onclick="checkAnswer()">제출</button>
+    <label for="answer1">질문 1: 어떤 동물이 가장 사랑스러운가요?</label><br>
+    <input type="text" id="answer1" name="answer1">
+    <button onclick="checkAnswer1()">제출</button>
   </div>
   
-  <div id="dog-image">
-    <h2>정답입니다!</h2>
-    <img src="https://place-puppy.com/200x150" alt="강아지 사진">
+  <div id="second-question">
+    <h2 id="second-question-title">마지막 질문입니다!!!</h2>
+    <div id="timer">
+      <p id="timer-text"></p>
+    </div>
+  </div>
+
+  <div id="prepare-message" style="display: none;">
+    <h2>아직 준비가 부족시군요!</h2>
+    <p>충분히 준비하세요.</p>
   </div>
 
   <script>
-    function checkAnswer() {
-      var answer = document.getElementById('answer').value.toLowerCase(); // 사용자 입력을 소문자로 변환
+    var timerSeconds = 20; // 타이머 초기 설정 값 (20초)
+    var prepareTimeSeconds = 60; // 준비 메시지 시간 설정 값 (60초)
+    var timerInterval;
+
+    function checkAnswer1() {
+      var answer = document.getElementById('answer1').value.toLowerCase(); // 사용자 입력을 소문자로 변환
       if (answer === '강아지') {
-        // 정답일 경우 강아지 사진을 보여줍니다.
-        document.getElementById('question-form').style.display = 'none'; // 질문 폼 숨기기
-        document.getElementById('dog-image').style.display = 'block'; // 강아지 사진 보이기
+        // 정답일 경우 두 번째 질문을 보이게 합니다.
+        document.getElementById('question-form').style.display = 'none'; // 첫 번째 질문 폼 숨기기
+        document.getElementById('second-question').style.display = 'block'; // 두 번째 질문 보이기
+        startTimer(); // 타이머 시작
       } else {
         alert('틀렸어요! 다시 시도해보세요.'); // 오답일 경우 경고창 띄우기
       }
+    }
+
+    function startTimer() {
+      var timerElement = document.getElementById('timer');
+      var timerTextElement = document.getElementById('timer-text');
+      timerElement.style.display = 'block'; // 타이머 보이기
+
+      timerInterval = setInterval(function() {
+        timerTextElement.textContent = '남은 시간: ' + timerSeconds + '초';
+        timerSeconds--;
+
+        if (timerSeconds < 0) {
+          clearInterval(timerInterval);
+          showPrepareMessage();
+        }
+      }, 1000);
+    }
+
+    function showPrepareMessage() {
+      var secondQuestionDiv = document.getElementById('second-question');
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      secondQuestionDiv.style.display = 'none'; // 두 번째 질문 숨기기
+      prepareMessageDiv.style.display = 'block'; // 준비 메시지 보이기
+
+      // 준비 메시지 시간동안 화면에 표시 후, 다시 처음 상태로 되돌아갑니다.
+      setTimeout(function() {
+        prepareMessageDiv.style.display = 'none';
+        document.getElementById('question-form').style.display = 'block'; // 처음 질문 폼 보이기
+        resetTimer(); // 타이머 초기화
+        resetAnswers(); // 답변 입력 초기화
+      }, prepareTimeSeconds * 1000); // prepareTimeSeconds 초 후에 실행 (밀리초 단위로 변환)
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerSeconds = 20; // 초기 타이머 설정 값으로 되돌립니다.
+      document.getElementById('timer-text').textContent = ''; // 타이머 텍스트 초기화
+      document.getElementById('timer').style.display = 'none'; // 타이머 숨기기
+    }
+
+    function resetAnswers() {
+      document.getElementById('answer1').value = ''; // 첫 번째 질문 답변 초기화
     }
   </script>
 </body>
