@@ -32,10 +32,14 @@
   </div>
   
   <div id="second-question">
-    <h2 id="second-question-title">마지막 질문입니다!!!</h2>
-    <div id="timer">
-      <p id="timer-text"></p>
-    </div>
+    <h2 id="second-question-title">장점 5가지</h2>
+    <textarea id="answer2" name="answer2" rows="4" cols="50"></textarea><br>
+    <button onclick="checkAnswer2()">제출</button>
+  </div>
+
+  <div id="dog-image">
+    <h2>정답입니다!</h2>
+    <img src="https://place-puppy.com/200x150" alt="강아지 사진">
   </div>
 
   <div id="prepare-message" style="display: none;">
@@ -100,6 +104,18 @@
 
     function resetAnswers() {
       document.getElementById('answer1').value = ''; // 첫 번째 질문 답변 초기화
+      document.getElementById('answer2').value = ''; // 두 번째 질문 답변 초기화
+    }
+
+    function checkAnswer2() {
+      var answer = document.getElementById('answer2').value;
+      if (answer.length >= 30) {
+        // 답변이 30글자 이상일 경우 정답으로 처리합니다.
+        document.getElementById('second-question').style.display = 'none'; // 두 번째 질문 숨기기
+        document.getElementById('dog-image').style.display = 'block'; // 강아지 사진 보이기
+      } else {
+        alert('답변이 너무 짧습니다! 30글자 이상 입력해주세요.'); // 답변이 30글자 미만일 경우 경고창 띄우기
+      }
     }
   </script>
 </body>
