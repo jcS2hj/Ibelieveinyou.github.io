@@ -20,6 +20,8 @@
   }
   #timer {
     display: none; /* 초기에는 타이머를 숨깁니다. */
+    font-size: 24px; /* 타이머 텍스트 크기 설정 */
+    margin-top: 20px; /* 타이머와 다음 문구 사이 여백 설정 */
   }
 </style>
 </head>
@@ -35,6 +37,7 @@
     <h2 id="second-question-title">장점 5가지</h2>
     <textarea id="answer2" name="answer2" rows="4" cols="50"></textarea><br>
     <button onclick="checkAnswer2()">제출</button>
+    <div id="timer">남은 시간: <span id="timer-text"></span></div>
   </div>
 
   <div id="dog-image">
@@ -72,14 +75,14 @@
       timerElement.style.display = 'block'; // 타이머 보이기
 
       timerInterval = setInterval(function() {
-        timerTextElement.textContent = '남은 시간: ' + timerSeconds + '초';
+        timerTextElement.textContent = timerSeconds + '초'; // 타이머 텍스트 업데이트
         timerSeconds--;
 
         if (timerSeconds < 0) {
           clearInterval(timerInterval);
           showPrepareMessage();
         }
-      }, 1000);
+      }, 1000); // 1초마다 실행
     }
 
     function showPrepareMessage() {
