@@ -1,12 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>간단한 페이지</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  #question-form {
+    margin-top: 50px;
+  }
+  #dog-image {
+    display: none; /* 초기에는 강아지 사진을 숨깁니다. */
+  }
+</style>
 </head>
 <body>
-  <p>Hello, World!</p>
+  <h1>질문에 답해보세요!</h1>
+  <div id="question-form">
+    <label for="answer">질문: 어떤 동물이 가장 사랑스러운가요?</label><br>
+    <input type="text" id="answer" name="answer">
+    <button onclick="checkAnswer()">제출</button>
+  </div>
+  
+  <div id="dog-image">
+    <h2>정답입니다!</h2>
+    <img src="https://place-puppy.com/200x150" alt="강아지 사진">
+  </div>
+
+  <script>
+    function checkAnswer() {
+      var answer = document.getElementById('answer').value.toLowerCase(); // 사용자 입력을 소문자로 변환
+      if (answer === '강아지') {
+        // 정답일 경우 강아지 사진을 보여줍니다.
+        document.getElementById('question-form').style.display = 'none'; // 질문 폼 숨기기
+        document.getElementById('dog-image').style.display = 'block'; // 강아지 사진 보이기
+      } else {
+        alert('틀렸어요! 다시 시도해보세요.'); // 오답일 경우 경고창 띄우기
+      }
+    }
+  </script>
 </body>
 </html>
