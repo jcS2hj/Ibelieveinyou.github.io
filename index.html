@@ -30,6 +30,11 @@
     color: red; /* 빨간색으로 설정 */
     margin-top: 20px; /* 메시지와 타이머 사이 여백 설정 */
   }
+  .countdown {
+    font-size: 64px;
+    color: red;
+    margin-top: 20px;
+  }
 </style>
 </head>
 <body>
@@ -55,7 +60,7 @@
   <div id="prepare-message">
     <h2>아직 준비가 부족시군요!</h2>
     <p>충분히 준비하세요.</p>
-    <div id="prepare-timer">남은 시간: <span id="prepare-timer-text"></span></div>
+    <div id="prepare-timer" class="countdown">남은 시간: <span id="prepare-timer-text"></span></div>
   </div>
 
   <script>
