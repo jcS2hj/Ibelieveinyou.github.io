@@ -55,9 +55,11 @@
     function checkAnswer1() {
       var answer = document.getElementById('answer1').value.toLowerCase(); // 사용자 입력을 소문자로 변환
       if (answer === '강아지') {
-        // 정답일 경우 두 번째 질문을 보이게 합니다.
+        // 정답일 경우 메시지를 보여주고 두 번째 질문으로 넘어갑니다.
         document.getElementById('question-form').style.display = 'none'; // 첫 번째 질문 폼 숨기기
         document.getElementById('second-question').style.display = 'block'; // 두 번째 질문 보이기
+        document.getElementById('dog-image').style.display = 'none'; // 정답 이미지 숨기기 (처음에는 필요 없음)
+        alert('생일선물로 멋진걸 받았져!!'); // 메시지 보여주기
         startTimer(); // 타이머 시작
       } else {
         alert('틀렸어요! 다시 시도해보세요.'); // 오답일 경우 경고창 띄우기
