@@ -166,21 +166,12 @@
     }
 
     function showPrepareMessage() {
-      var secondQuestionDiv = document.getElementById('second-question');
       var prepareMessageDiv = document.getElementById('prepare-message');
-      secondQuestionDiv.style.display = 'none'; // 두 번째 질문 숨기기
-      prepareMessageDiv.style.display = 'block'; // 준비 메시지 보이기
-
-      startPrepareTimer(); // 준비 메시지 타이머 시작
-    }
-
-    function startPrepareTimer() {
-      var prepareMessageDiv = document.getElementById('prepare-message');
-      var prepareTimerTextElement = document.getElementById('prepare-timer-text');
       prepareMessageDiv.style.display = 'block'; // 준비 메시지 보이기
 
       prepareTimerInterval = setInterval(function() {
-        prepareTimerTextElement.textContent = prepareTimeSeconds + '초'; // 준비 메시지 타이머 텍스트 업데이트
+        document.getElementById('prepare-timer').style.display = 'block'; // 준비 타이머 보이기
+        document.getElementById('prepare-timer-text').textContent = prepareTimeSeconds + '초'; // 준비 메시지 타이머 텍스트 업데이트
         prepareTimeSeconds--;
 
         if (prepareTimeSeconds < 0) {
