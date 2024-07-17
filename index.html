@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,8 +80,8 @@
   </div>
 
   <script>
-    var timerSeconds = 20; // 타이머 초기 설정 값 (20초)
-    var prepareTimeSeconds = 60; // 준비 메시지 시간 설정 값 (60초)
+    var timerSeconds = 5; // 타이머 초기 설정 값 (20초)
+    var prepareTimeSeconds = 10; // 준비 메시지 시간 설정 값 (60초)
     var timerInterval;
     var prepareTimerInterval;
 
@@ -115,36 +115,17 @@
       }, 1000); // 1초마다 실행
     }
 
-    function showPrepareMessage() {
-      var secondQuestionDiv = document.getElementById('second-question');
-      var prepareMessageDiv = document.getElementById('prepare-message');
-      secondQuestionDiv.style.display = 'none'; // 두 번째 질문 숨기기
-      prepareMessageDiv.style.display = 'block'; // 준비 메시지 보이기
-
-      startPrepareTimer(); // 준비 메시지 타이머 시작
-    }
-
-    function startPrepareTimer() {
-      var prepareMessageDiv = document.getElementById('prepare-message');
-      var prepareTimerTextElement = document.getElementById('prepare-timer-text');
-      prepareMessageDiv.style.display = 'block'; // 준비 메시지 보이기
-
-      prepareTimerInterval = setInterval(function() {
-        prepareTimerTextElement.textContent = prepareTimeSeconds + '초'; // 준비 메시지 타이머 텍스트 업데이트
-        prepareTimeSeconds--;
-
-        if (prepareTimeSeconds < 0) {
-          clearInterval(prepareTimerInterval);
-          showThirdQuestion(); // 세 번째 질문으로 넘어가기
-        }
-      }, 1000); // 1초마다 실행
-    }
-
-    function showThirdQuestion() {
-      var prepareMessageDiv = document.getElementById('prepare-message');
-      prepareMessageDiv.style.display = 'none'; // 준비 메시지 숨기기
-      document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
-      startTimer3(); // 세 번째 질문 타이머 시작
+    function checkAnswer2() {
+      var answer = document.getElementById('answer2').value;
+      if (answer.length >= 30) {
+        // 답변이 30글자 이상일 경우 정답으로 처리합니다.
+        document.getElementById('second-question').style.display = 'none'; // 두 번째 질문 숨기기
+        document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
+        startTimer3(); // 타이머 시작
+      } else {
+        alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.'); // 오답일 경우 경고창 띄우기
+        showPrepareMessage(); // 준비 메시지 보이기
+      }
     }
 
     function startTimer3() {
@@ -158,22 +139,9 @@
 
         if (timerSeconds < 0) {
           clearInterval(timerInterval);
-          showPrepareMessage();
+          showPrepareMessage(); // 타이머가 끝나면 준비 메시지 표시
         }
       }, 1000); // 1초마다 실행
-    }
-
-    function checkAnswer2() {
-      var answer = document.getElementById('answer2').value;
-      if (answer.length >= 30) {
-        // 답변이 30글자 이상일 경우 정답으로 처리합니다.
-        document.getElementById('second-question').style.display = 'none'; // 두 번째 질문 숨기기
-        document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
-        startTimer3(); // 타이머 시작
-      } else {
-        alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.'); // 오답일 경우 경고창 띄우기
-        showPrepareMessage(); // 준비 메시지 보이기
-      }
     }
 
     function checkAnswer3() {
@@ -213,6 +181,38 @@
       } else {
         alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.'); // 오답일 경우 경고창 띄우기
       }
+    }
+
+    function showPrepareMessage() {
+      var thirdQuestionDiv = document.getElementById('third-question');
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      thirdQuestionDiv.style.display = 'none'; // 세 번째 질문 숨기기
+      prepareMessageDiv.style.display = 'block'; // 준비 메시지 보이기
+
+      startPrepareTimer(); // 준비 메시지 타이머 시작
+    }
+
+    function startPrepareTimer() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      var prepareTimerTextElement = document.getElementById('prepare-timer-text');
+      prepareMessageDiv.style.display = 'block'; // 준비 메시지 보이기
+
+      prepareTimerInterval = setInterval(function() {
+        prepareTimerTextElement.textContent = prepareTimeSeconds + '초'; // 준비 메시지 타이머 텍스트 업데이트
+        prepareTimeSeconds--;
+
+        if (prepareTimeSeconds < 0) {
+          clearInterval(prepareTimerInterval);
+          showThirdQuestion(); // 준비 메시지 타이머가 끝나면 세 번째 질문 보이기
+        }
+      }, 1000); // 1초마다 실행
+    }
+
+    function showThirdQuestion() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      prepareMessageDiv.style.display = 'none'; // 준비 메시지 숨기기
+      document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
+      startTimer3(); // 세 번째 질문 타이머 시작
     }
   </script>
 </body>
