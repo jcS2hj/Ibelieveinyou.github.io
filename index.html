@@ -135,43 +135,16 @@
 
         if (prepareTimeSeconds < 0) {
           clearInterval(prepareTimerInterval);
-          resetQuiz(); // 퀴즈 초기화
+          showThirdQuestion(); // 세 번째 질문으로 넘어가기
         }
       }, 1000); // 1초마다 실행
     }
 
-    function resetQuiz() {
+    function showThirdQuestion() {
       var prepareMessageDiv = document.getElementById('prepare-message');
       prepareMessageDiv.style.display = 'none'; // 준비 메시지 숨기기
-      document.getElementById('question-form').style.display = 'block'; // 처음 질문 폼 보이기
-      resetTimer(); // 타이머 초기화
-      resetAnswers(); // 답변 입력 초기화
-    }
-
-    function resetTimer() {
-      clearInterval(timerInterval);
-      timerSeconds = 20; // 초기 타이머 설정 값으로 되돌립니다.
-      document.getElementById('timer-text').textContent = ''; // 타이머 텍스트 초기화
-      document.getElementById('timer').style.display = 'none'; // 타이머 숨기기
-    }
-
-    function resetAnswers() {
-      document.getElementById('answer1').value = ''; // 첫 번째 질문 답변 초기화
-      document.getElementById('answer2').value = ''; // 두 번째 질문 답변 초기화
-      document.getElementById('answer3').value = ''; // 세 번째 질문 답변 초기화
-      document.getElementById('answer4').value = ''; // 네 번째 질문 답변 초기화
-    }
-
-    function checkAnswer2() {
-      var answer = document.getElementById('answer2').value;
-      if (answer.length >= 30) {
-        // 답변이 30글자 이상일 경우 정답으로 처리합니다.
-        document.getElementById('second-question').style.display = 'none'; // 두 번째 질문 숨기기
-        document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
-        startTimer3(); // 타이머 시작
-      } else {
-        alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.'); // 오답일 경우 경고창 띄우기
-      }
+      document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
+      startTimer3(); // 세 번째 질문 타이머 시작
     }
 
     function startTimer3() {
@@ -188,6 +161,19 @@
           showPrepareMessage();
         }
       }, 1000); // 1초마다 실행
+    }
+
+    function checkAnswer2() {
+      var answer = document.getElementById('answer2').value;
+      if (answer.length >= 30) {
+        // 답변이 30글자 이상일 경우 정답으로 처리합니다.
+        document.getElementById('second-question').style.display = 'none'; // 두 번째 질문 숨기기
+        document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
+        startTimer3(); // 타이머 시작
+      } else {
+        alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.'); // 오답일 경우 경고창 띄우기
+        showPrepareMessage(); // 준비 메시지 보이기
+      }
     }
 
     function checkAnswer3() {
