@@ -18,7 +18,7 @@
   #second-question, #third-question, #fourth-question {
     display: none; /* 초기에는 질문들을 숨깁니다. */
   }
-  #timer, #timer3, #timer4 {
+  #timer, #timer3, #timer4, #prepare-timer {
     display: none; /* 초기에는 타이머를 숨깁니다. */
     font-size: 48px; /* 타이머 텍스트 크기 설정 */
     margin-top: 20px; /* 타이머와 다음 문구 사이 여백 설정 */
@@ -65,7 +65,6 @@
     <h2 id="fourth-question-title">........ 사랑해라고 적어주세요....</h2>
     <textarea id="answer4" name="answer4" rows="4" cols="50"></textarea><br>
     <button onclick="checkAnswer4()">제출</button>
-    <div id="timer4">남은 시간: <span id="timer4-text"></span></div>
   </div>
 
   <div id="dog-image">
@@ -80,8 +79,8 @@
   </div>
 
   <script>
-    var timerSeconds = 5; // 타이머 초기 설정 값 (20초)
-    var prepareTimeSeconds = 10; // 준비 메시지 시간 설정 값 (60초)
+    var timerSeconds = 5; // 5초 타이머
+    var prepareTimeSeconds = 60; // 준비 메시지 시간 설정 값 (60초)
     var timerInterval;
     var prepareTimerInterval;
 
@@ -110,7 +109,7 @@
 
         if (timerSeconds < 0) {
           clearInterval(timerInterval);
-          showPrepareMessage();
+          showPrepareMessage(); // 타이머가 끝나면 준비 메시지 표시
         }
       }, 1000); // 1초마다 실행
     }
@@ -139,7 +138,7 @@
 
         if (timerSeconds < 0) {
           clearInterval(timerInterval);
-          showPrepareMessage(); // 타이머가 끝나면 준비 메시지 표시
+          showFourthQuestion(); // 타이머가 끝나면 네 번째 질문 보이기
         }
       }, 1000); // 1초마다 실행
     }
@@ -150,26 +149,9 @@
         // 답변이 30글자 이상일 경우 정답으로 처리합니다.
         document.getElementById('third-question').style.display = 'none'; // 세 번째 질문 숨기기
         document.getElementById('fourth-question').style.display = 'block'; // 네 번째 질문 보이기
-        startTimer4(); // 타이머 시작
       } else {
         alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.'); // 오답일 경우 경고창 띄우기
       }
-    }
-
-    function startTimer4() {
-      var timerElement = document.getElementById('timer4');
-      var timerTextElement = document.getElementById('timer4-text');
-      timerElement.style.display = 'block'; // 타이머 보이기
-
-      timerInterval = setInterval(function() {
-        timerTextElement.textContent = timerSeconds + '초'; // 타이머 텍스트 업데이트
-        timerSeconds--;
-
-        if (timerSeconds < 0) {
-          clearInterval(timerInterval);
-          showPrepareMessage();
-        }
-      }, 1000); // 1초마다 실행
     }
 
     function checkAnswer4() {
@@ -184,9 +166,9 @@
     }
 
     function showPrepareMessage() {
-      var thirdQuestionDiv = document.getElementById('third-question');
+      var secondQuestionDiv = document.getElementById('second-question');
       var prepareMessageDiv = document.getElementById('prepare-message');
-      thirdQuestionDiv.style.display = 'none'; // 세 번째 질문 숨기기
+      secondQuestionDiv.style.display = 'none'; // 두 번째 질문 숨기기
       prepareMessageDiv.style.display = 'block'; // 준비 메시지 보이기
 
       startPrepareTimer(); // 준비 메시지 타이머 시작
@@ -212,7 +194,6 @@
       var prepareMessageDiv = document.getElementById('prepare-message');
       prepareMessageDiv.style.display = 'none'; // 준비 메시지 숨기기
       document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
-      startTimer3(); // 세 번째 질문 타이머 시작
     }
   </script>
 </body>
