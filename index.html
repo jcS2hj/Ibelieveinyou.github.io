@@ -80,7 +80,7 @@
 
   <script>
     var timerSeconds = 5; // 5초 타이머
-    var prepareTimeSeconds = 60; // 준비 메시지 시간 설정 값 (60초)
+    var prepareTimeSeconds = 10; // 준비 메시지 시간 설정 값 (60초)
     var timerInterval;
     var prepareTimerInterval;
 
@@ -90,7 +90,6 @@
         // 정답일 경우 메시지를 보여주고 두 번째 질문으로 넘어갑니다.
         document.getElementById('question-form').style.display = 'none'; // 첫 번째 질문 폼 숨기기
         document.getElementById('second-question').style.display = 'block'; // 두 번째 질문 보이기
-        document.getElementById('dog-image').style.display = 'none'; // 정답 이미지 숨기기 (처음에는 필요 없음)
         alert('생일 선물로 아주 멋진것을 받아버렸죠!!.'); // 메시지 보여주기
         startTimer(); // 타이머 시작
       } else {
@@ -119,7 +118,7 @@
       if (answer.length >= 30) {
         // 답변이 30글자 이상일 경우 정답으로 처리합니다.
         document.getElementById('second-question').style.display = 'none'; // 두 번째 질문 숨기기
-        document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
+        alert('훌륭한 순발력 제 여자친구가 맞군요!!!.'); // 메시지 보여주기
         startTimer3(); // 타이머 시작
       } else {
         alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.'); // 오답일 경우 경고창 띄우기
@@ -151,6 +150,7 @@
         document.getElementById('fourth-question').style.display = 'block'; // 네 번째 질문 보이기
       } else {
         alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.'); // 오답일 경우 경고창 띄우기
+        showPrepareMessage2(); // 준비 메시지 보이기
       }
     }
 
@@ -181,10 +181,32 @@
       }, 1000); // 1초마다 실행
     }
 
+    function showPrepareMessage2() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      prepareMessageDiv.style.display = 'block'; // 준비 메시지 보이기
+
+      prepareTimerInterval = setInterval(function() {
+        document.getElementById('prepare-timer').style.display = 'block'; // 준비 타이머 보이기
+        document.getElementById('prepare-timer-text').textContent = prepareTimeSeconds + '초'; // 준비 메시지 타이머 텍스트 업데이트
+        prepareTimeSeconds--;
+
+        if (prepareTimeSeconds < 0) {
+          clearInterval(prepareTimerInterval);
+          showThirdQuestion(); // 준비 메시지 타이머가 끝나면 세 번째 질문 보이기
+        }
+      }, 1000); // 1초마다 실행
+    }
+
     function showThirdQuestion() {
       var prepareMessageDiv = document.getElementById('prepare-message');
       prepareMessageDiv.style.display = 'none'; // 준비 메시지 숨기기
       document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
+    }
+
+    function showfourQuestion() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      prepareMessageDiv.style.display = 'none'; // 준비 메시지 숨기기
+      document.getElementById('fourth-question').style.display = 'block'; // 세 번째 질문 보이기
     }
   </script>
 </body>
