@@ -163,7 +163,7 @@
     }
 
     function showNextQuestion() {
-      if (document.getElementById('third-question').style.display === 'none' && 
+      if (document.getElementById('third-question').style.display === 'none' ||
           document.getElementById('fourth-question').style.display === 'none') {
         document.getElementById('third-question').style.display = 'block';
         startTimer('timer3', showPrepareMessage);
