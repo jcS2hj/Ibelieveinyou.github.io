@@ -32,7 +32,7 @@
 </style>
 </head>
 <body>
-  <h1>제 여자친구라면 답할 수 있는 문제!!!</h1>
+  <h1>제 여자친구라면 답할 수 있는 문제!!</h1>
   <div id="question-form">
     <label for="answer1">질문 1: 어떤 동물이 가장 사랑스러운가요?</label><br>
     <input type="text" id="answer1" name="answer1">
@@ -144,6 +144,7 @@
       var prepareMessageDiv = document.getElementById('prepare-message');
       document.getElementById('question-form').style.display = 'none';
       document.getElementById('second-question').style.display = 'none';
+      document.getElementById('third-question').style.display = 'none';
       prepareMessageDiv.style.display = 'block';
 
       prepareTimerInterval = setInterval(function() {
@@ -153,16 +154,18 @@
 
         if (prepareTimeSeconds < 0) {
           clearInterval(prepareTimerInterval);
+          prepareMessageDiv.style.display = 'none';
           showNextQuestion();
         }
       }, 1000);
     }
 
     function showNextQuestion() {
-      document.getElementById('prepare-message').style.display = 'none';
-      if (document.getElementById('second-question').style.display === 'none') {
+      if (document.getElementById('second-question').style.display === 'none' && 
+          document.getElementById('third-question').style.display === 'none' && 
+          document.getElementById('fourth-question').style.display === 'none') {
         document.getElementById('third-question').style.display = 'block';
-      } else if (document.getElementById('third-question').style.display === 'none') {
+      } else if (document.getElementById('third-question').style.display === 'block') {
         document.getElementById('fourth-question').style.display = 'block';
       }
     }
