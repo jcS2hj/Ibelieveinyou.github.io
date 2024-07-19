@@ -184,8 +184,6 @@
 
         if (prepareTimeSeconds < 0) {
           clearInterval(prepareTimerInterval);
-          prepareMessageDiv.style.display = 'none';
-          document.getElementById('third-question').style.display = 'block';
           showFourthQuestion();
         }
       }, 1000);
