@@ -192,6 +192,7 @@
     function showFourthQuestion() {
       var prepareMessageDiv = document.getElementById('prepare-message');
       prepareMessageDiv.style.display = 'none';
+      document.getElementById('third-question').style.display = 'none';
       document.getElementById('fourth-question').style.display = 'block';
     }
 
@@ -200,6 +201,7 @@
       if (answer.includes('사랑해')) {
         clearInterval(timerInterval); // 타이머 정지
         document.getElementById('fourth-question').style.display = 'none';
+        document.getElementById('prepare-timer').style.display = 'none';
         document.getElementById('dog-image').style.display = 'block';
       } else {
         alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
