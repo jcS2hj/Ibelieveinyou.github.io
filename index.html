@@ -156,7 +156,6 @@
         if (prepareTimeSeconds < 0) {
           clearInterval(prepareTimerInterval);
           showThirdQuestion(); // 준비 메시지 타이머가 끝나면 세 번째 질문 보이기
-          startTimer(); // 타이머 시작
         }
       }, 1000); // 1초마다 실행
     }
@@ -165,6 +164,7 @@
       var prepareMessageDiv = document.getElementById('prepare-message');
       prepareMessageDiv.style.display = 'none'; // 준비 메시지 숨기기
       timerElement.style.display = 'block'; // 타이머 보이기
+      startTimer(); // 타이머 시작
       document.getElementById('question-form').style.display = 'none'; // 첫 번째 질문 폼 숨기기
       document.getElementById('second-question').style.display = 'none'; // 두 번째 질문 숨기기
       document.getElementById('third-question').style.display = 'block'; // 세 번째 질문 보이기
