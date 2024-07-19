@@ -32,7 +32,7 @@
 </style>
 </head>
 <body>
-  <h1>제 여자친구라면 답할 수 있는 문제!!</h1>
+  <h1>제 여자친구라면 답할 수 있는 문제!!!</h1>
   <div id="question-form">
     <label for="answer1">질문 1: 어떤 동물이 가장 사랑스러운가요?</label><br>
     <input type="text" id="answer1" name="answer1">
@@ -67,8 +67,8 @@
   </div>
 
   <div id="prepare-message">
-    <h2>아직 준비가 부족시군요!</h2>
-    <p>충분히 준비하세요.</p>
+    <h2>아냐아냐 아직 준비가 부족시군요!</h2>
+    <p style="color: red;">준비해 준비해!! 아주 잘적어야한다구!</p>
     <div id="prepare-timer" class="countdown">남은 시간: <span id="prepare-timer-text"></span></div>
   </div>
 
@@ -95,7 +95,7 @@
       if (answer.length >= 30) {
         document.getElementById('second-question').style.display = 'none';
         alert('훌륭한 순발력 제 여자친구가 맞군요!!!');
-        document.getElementById('dog-image').style.display = 'block';
+        showNextQuestion();
       } else {
         alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
         showPrepareMessage();
@@ -107,7 +107,7 @@
       if (answer.length >= 30) {
         document.getElementById('third-question').style.display = 'none';
         alert('아무거나 친건 아니겠지요!!');
-        document.getElementById('dog-image').style.display = 'block';
+        showNextQuestion();
       } else {
         alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
         showPrepareMessage();
@@ -146,6 +146,7 @@
       document.getElementById('question-form').style.display = 'none';
       document.getElementById('second-question').style.display = 'none';
       document.getElementById('third-question').style.display = 'none';
+      document.getElementById('fourth-question').style.display = 'none';
       prepareMessageDiv.style.display = 'block';
 
       prepareTimerInterval = setInterval(function() {
@@ -163,7 +164,7 @@
     }
 
     function showNextQuestion() {
-      if (document.getElementById('third-question').style.display === 'none' ||
+      if (document.getElementById('third-question').style.display === 'none' && 
           document.getElementById('fourth-question').style.display === 'none') {
         document.getElementById('third-question').style.display = 'block';
         startTimer('timer3', showPrepareMessage);
