@@ -109,13 +109,12 @@
     function checkAnswer2() {
       var answer = document.getElementById('answer2').value;
       if (answer.length >= 30) {
-        clearInterval(timerInterval);
+        clearInterval(timerInterval); // 타이머 중지
         document.getElementById('second-question').style.display = 'none';
         alert('훌륭한 순발력 제 여자친구가 맞군요!!!');
         document.getElementById('dog-image').style.display = 'block';
       } else {
         alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
-        showPrepareMessage();
       }
     }
 
@@ -141,6 +140,7 @@
       prepareMessageDiv.style.display = 'none';
       document.getElementById('third-question').style.display = 'block';
       startTimer3();
+      document.getElementById('answer3').focus(); // 커서 자동 이동
     }
 
     function startTimer3() {
@@ -163,13 +163,12 @@
     function checkAnswer3() {
       var answer = document.getElementById('answer3').value;
       if (answer.length >= 30) {
-        clearInterval(timerInterval);
+        clearInterval(timerInterval); // 타이머 중지
         document.getElementById('third-question').style.display = 'none';
         alert('아무거나 친건 아니겠지요!! ');
         document.getElementById('dog-image').style.display = 'block';
       } else {
         alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
-        showPrepareMessage2();
       }
     }
 
@@ -193,12 +192,13 @@
       var prepareMessageDiv = document.getElementById('prepare-message');
       prepareMessageDiv.style.display = 'none';
       document.getElementById('fourth-question').style.display = 'block';
+      document.getElementById('answer4').focus(); // 커서 자동 이동
     }
 
     function checkAnswer4() {
       var answer = document.getElementById('answer4').value;
       if (answer.includes('사랑해')) {
-        clearInterval(timerInterval);
+        clearInterval(timerInterval); // 타이머 중지
         document.getElementById('fourth-question').style.display = 'none';
         document.getElementById('dog-image').style.display = 'block';
       } else {
