@@ -156,6 +156,8 @@
 
         if (timerSeconds < 0) {
           clearInterval(timerInterval);
+          prepareMessageDiv.style.display = 'none';
+          document.getElementById('third-question').style.display = 'none';
           showPrepareMessage2();
         }
       }, 1000);
@@ -184,8 +186,6 @@
 
         if (prepareTimeSeconds < 0) {
           clearInterval(prepareTimerInterval);
-          prepareMessageDiv.style.display = 'none';
-          document.getElementById('third-question').style.display = 'none';
           showFourthQuestion();
         }
       }, 1000);
