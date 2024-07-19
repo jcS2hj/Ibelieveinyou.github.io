@@ -83,6 +83,7 @@
       if (answer === '강아지') {
         document.getElementById('question-form').style.display = 'none';
         document.getElementById('second-question').style.display = 'block';
+        document.getElementById('answer2').focus(); // 자동 커서 이동
         alert('생일 선물로 아주 멋진것을 받아버렸죠!!!');
         startTimer();
       } else {
@@ -139,8 +140,8 @@
       var prepareMessageDiv = document.getElementById('prepare-message');
       prepareMessageDiv.style.display = 'none';
       document.getElementById('third-question').style.display = 'block';
+      document.getElementById('answer3').focus(); // 자동 커서 이동
       startTimer3();
-      document.getElementById('answer3').focus(); // 커서 자동 이동
     }
 
     function startTimer3() {
@@ -192,7 +193,7 @@
       var prepareMessageDiv = document.getElementById('prepare-message');
       prepareMessageDiv.style.display = 'none';
       document.getElementById('fourth-question').style.display = 'block';
-      document.getElementById('answer4').focus(); // 커서 자동 이동
+      document.getElementById('answer4').focus(); // 자동 커서 이동
     }
 
     function checkAnswer4() {
