@@ -184,8 +184,6 @@
 
         if (prepareTimeSeconds < 0) {
           clearInterval(prepareTimerInterval);
-          prepareMessageDiv.style.display = 'none';
-          document.getElementById('third-question').style.display = 'none';
           showFourthQuestion();
         }
       }, 1000);
@@ -193,6 +191,7 @@
 
     function showFourthQuestion() {
       var prepareMessageDiv = document.getElementById('prepare-message');
+      prepareMessageDiv.style.display = 'none';
       document.getElementById('fourth-question').style.display = 'block';
       document.getElementById('answer4').focus(); // 자동 커서 이동
     }
