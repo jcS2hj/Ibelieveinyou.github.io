@@ -32,7 +32,7 @@
 </style>
 </head>
 <body>
-  <h1>제 여자친구라면 답할 수 있는 문제!!</h1>
+  <h1>제 여자친구라면 답할 수 있는 문제!!!</h1>
   <div id="question-form">
     <label for="answer1">질문 1: 어떤 동물이 가장 사랑스러운가요?</label><br>
     <input type="text" id="answer1" name="answer1">
@@ -44,6 +44,7 @@
     <p style="color: red;">30글자 이상 작성해주세요!</p>
     <textarea id="answer2" name="answer2" rows="4" cols="50"></textarea><br>
     <button onclick="checkAnswer2()">제출</button>
+    <div id="timer">남은 시간: <span id="timer-text"></span></div>
   </div>
   
   <div id="third-question">
@@ -83,14 +84,32 @@
         document.getElementById('question-form').style.display = 'none';
         document.getElementById('second-question').style.display = 'block';
         alert('생일 선물로 아주 멋진것을 받아버렸죠!!!');
+        startTimer();
       } else {
         alert('틀렸어요! 다시 시도해보세요.');
       }
     }
 
+    function startTimer() {
+      var timerElement = document.getElementById('timer');
+      var timerTextElement = document.getElementById('timer-text');
+      timerElement.style.display = 'block';
+
+      timerInterval = setInterval(function() {
+        timerTextElement.textContent = timerSeconds + '초';
+        timerSeconds--;
+
+        if (timerSeconds < 0) {
+          clearInterval(timerInterval);
+          showPrepareMessage();
+        }
+      }, 1000);
+    }
+
     function checkAnswer2() {
       var answer = document.getElementById('answer2').value;
       if (answer.length >= 30) {
+        clearInterval(timerInterval); // 타이머 정지
         document.getElementById('second-question').style.display = 'none';
         alert('훌륭한 순발력 제 여자친구가 맞군요!!!');
         document.getElementById('dog-image').style.display = 'block';
@@ -100,51 +119,9 @@
       }
     }
 
-    function checkAnswer3() {
-      var answer = document.getElementById('answer3').value;
-      if (answer.length >= 30) {
-        document.getElementById('third-question').style.display = 'none';
-        alert('아무거나 친건 아니겠지요!!');
-        showFourthQuestion(); // 세 번째 질문 후 네 번째 질문으로 넘어갑니다.
-      } else {
-        alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
-        showPrepareMessage();
-      }
-    }
-
-    function checkAnswer4() {
-      var answer = document.getElementById('answer4').value;
-      if (answer.includes('사랑해')) {
-        document.getElementById('fourth-question').style.display = 'none';
-        document.getElementById('dog-image').style.display = 'block';
-      } else {
-        alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
-      }
-    }
-
-    function startTimer(timerId, callback) {
-      var timerElement = document.getElementById(timerId);
-      var timerTextElement = document.getElementById(timerId + '-text');
-      timerElement.style.display = 'block';
-      
-      timerInterval = setInterval(function() {
-        timerTextElement.textContent = timerSeconds + '초';
-        timerSeconds--;
-
-        if (timerSeconds < 0) {
-          clearInterval(timerInterval);
-          timerSeconds = 5; // 타이머 초기화
-          callback();
-        }
-      }, 1000);
-    }
-
     function showPrepareMessage() {
       var prepareMessageDiv = document.getElementById('prepare-message');
-      document.getElementById('question-form').style.display = 'none';
       document.getElementById('second-question').style.display = 'none';
-      document.getElementById('third-question').style.display = 'none';
-      document.getElementById('fourth-question').style.display = 'none';
       prepareMessageDiv.style.display = 'block';
 
       prepareTimerInterval = setInterval(function() {
@@ -154,27 +131,78 @@
 
         if (prepareTimeSeconds < 0) {
           clearInterval(prepareTimerInterval);
-          prepareTimeSeconds = 10; // 준비 시간 초기화
-          prepareMessageDiv.style.display = 'none';
-          showNextQuestion();
+          showThirdQuestion();
         }
       }, 1000);
     }
 
     function showThirdQuestion() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      prepareMessageDiv.style.display = 'none';
       document.getElementById('third-question').style.display = 'block';
-      startTimer('timer3', showPrepareMessage);
+      startTimer3();
+    }
+
+    function startTimer3() {
+      var timerElement = document.getElementById('timer3');
+      var timerTextElement = document.getElementById('timer3-text');
+      timerElement.style.display = 'block';
+      timerSeconds = 5; // 타이머 초기화
+
+      timerInterval = setInterval(function() {
+        timerTextElement.textContent = timerSeconds + '초';
+        timerSeconds--;
+
+        if (timerSeconds < 0) {
+          clearInterval(timerInterval);
+          showPrepareMessage2();
+        }
+      }, 1000);
+    }
+
+    function checkAnswer3() {
+      var answer = document.getElementById('answer3').value;
+      if (answer.length >= 30) {
+        clearInterval(timerInterval); // 타이머 정지
+        document.getElementById('third-question').style.display = 'none';
+        alert('아무거나 친건 아니겠지요!! ');
+        document.getElementById('dog-image').style.display = 'block';
+      } else {
+        alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
+        showPrepareMessage2();
+      }
+    }
+
+    function showPrepareMessage2() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      prepareMessageDiv.style.display = 'block';
+
+      prepareTimerInterval = setInterval(function() {
+        document.getElementById('prepare-timer').style.display = 'block';
+        document.getElementById('prepare-timer-text').textContent = prepareTimeSeconds + '초';
+        prepareTimeSeconds--;
+
+        if (prepareTimeSeconds < 0) {
+          clearInterval(prepareTimerInterval);
+          showFourthQuestion();
+        }
+      }, 1000);
     }
 
     function showFourthQuestion() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      prepareMessageDiv.style.display = 'none';
       document.getElementById('fourth-question').style.display = 'block';
     }
 
-    function showNextQuestion() {
-      if (document.getElementById('third-question').style.display === 'none') {
-        showThirdQuestion();
-      } else if (document.getElementById('third-question').style.display === 'block') {
-        showFourthQuestion();
+    function checkAnswer4() {
+      var answer = document.getElementById('answer4').value;
+      if (answer.includes('사랑해')) {
+        clearInterval(timerInterval); // 타이머 정지
+        document.getElementById('fourth-question').style.display = 'none';
+        document.getElementById('dog-image').style.display = 'block';
+      } else {
+        alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
       }
     }
   </script>
