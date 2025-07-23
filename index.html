@@ -312,6 +312,8 @@
     function showPrepareMessage() {
       var prepareMessageDiv = document.getElementById('prepare-message');
       document.getElementById('second-question').style.display = 'none';
+      document.getElementById('third-question').style.display = 'none';
+      document.getElementById('fourth-question').style.display = 'none';
       prepareMessageDiv.style.display = 'block';
 
       prepareTimerInterval = setInterval(function() {
@@ -321,10 +323,26 @@
 
         if (prepareTimeSeconds < 0) {
           clearInterval(prepareTimerInterval);
-          showThirdQuestion();
+          showFirstQuestion();
         }
       }, 1000);
     }
+    function showFirstQuestion() {
+  // 첫 번째 질문을 다시 보이도록 설정
+  document.getElementById('prepare-message').style.display = 'none';
+  document.getElementById('question-form').style.display = 'block';
+  document.getElementById('answer1').value = ''; // 답변 초기화
+  document.getElementById('answer1').focus(); // 자동 커서 이동
+  
+  // 다른 질문들을 숨기기
+  document.getElementById('second-question').style.display = 'none';
+  document.getElementById('third-question').style.display = 'none';
+  document.getElementById('fourth-question').style.display = 'none';
+  
+  // 타이머 초기화
+  timerSeconds = 5; // 타이머 초기화
+  document.getElementById('timer').style.display = 'none'; // 타이머 숨기기
+}
 
     function showThirdQuestion() {
       var prepareMessageDiv = document.getElementById('prepare-message');
