@@ -1,35 +1,85 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>간단한 퀴즈 페이지</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  #question-form, #second-question, #third-question, #fourth-question, #dog-image, #prepare-message {
-    margin-top: 20px;
-  }
-  #dog-image {
-    display: none;
-  }
-  #second-question, #third-question, #fourth-question, #prepare-message {
-    display: none;
-  }
-  #timer, #timer3, #timer4, #prepare-timer {
-    display: none;
-    font-size: 48px;
-    margin-top: 20px;
-    color: red;
-  }
-  .countdown {
-    font-size: 64px;
-    color: red;
-    margin-top: 20px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>간단한 퀴즈 페이지</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* 화면 밖으로 하트가 벗어나지 않도록 설정 */
+    }
+    
+    /* 배경 하트 애니메이션 */
+    .heart {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-color: red;
+      clip-path: polygon(50% 0%, 0% 38%, 100% 38%);
+      transform: rotate(45deg);
+      opacity: 0.7;
+      animation: heartAnimation 4s infinite;
+    }
+    
+    /* 하트가 위로 올라가는 애니메이션 */
+    @keyframes heartAnimation {
+      0% {
+        top: 100%;
+        left: random(0, 100%);
+        transform: scale(1) rotate(45deg);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.5) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        top: -100px;
+        left: random(0, 100%);
+        transform: scale(1) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    /* 퀴즈 섹션 스타일 */
+    #question-form, #second-question, #third-question, #fourth-question, #dog-image, #prepare-message {
+      margin-top: 20px;
+    }
+    #dog-image {
+      display: none;
+    }
+    #second-question, #third-question, #fourth-question, #prepare-message {
+      display: none;
+    }
+    #timer, #timer3, #timer4, #prepare-timer {
+      display: none;
+      font-size: 48px;
+      margin-top: 20px;
+      color: red;
+    }
+    .countdown {
+      font-size: 64px;
+      color: red;
+      margin-top: 20px;
+    }
+
+    /* 배경 하트가 계속 움직이게 하기 위한 스타일 */
+    @keyframes heart-float {
+      0% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-50px) scale(1.5);
+      }
+      100% {
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>제 여자친구라면 답할 수 있는 문제!!</h1>
@@ -38,7 +88,7 @@
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
   </div>
-  
+
   <div id="second-question">
     <h2>남자친구의 단점 5가지</h2>
     <p style="color: red;">30글자 이상 작성해주세요!</p>
@@ -46,7 +96,7 @@
     <button onclick="checkAnswer2()">제출</button>
     <div id="timer">남은 시간: <span id="timer-text"></span></div>
   </div>
-  
+
   <div id="third-question">
     <h2>남자친구의 장점 5가지</h2>
     <p style="color: red;">30글자 이상 작성해주세요!</p>
@@ -54,7 +104,7 @@
     <button onclick="checkAnswer3()">제출</button>
     <div id="timer3">남은 시간: <span id="timer3-text"></span></div>
   </div>
-  
+
   <div id="fourth-question">
     <h2>........ 사랑해라고 적어주세요....</h2>
     <textarea id="answer4" name="answer4" rows="4" cols="50"></textarea><br>
@@ -77,6 +127,21 @@
     var prepareTimeSeconds = 10;
     var timerInterval;
     var prepareTimerInterval;
+
+    // 하트 생성 함수
+    function createHeart() {
+      var heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * window.innerWidth + 'px'; // 랜덤 x 좌표
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove(); // 하트가 올라간 후 삭제
+      }, 4000); // 애니메이션 시간이 끝나면 삭제
+    }
+
+    // 일정 시간 간격으로 하트 생성
+    setInterval(createHeart, 200);
 
     function checkAnswer1() {
       var answer = document.getElementById('answer1').value.toLowerCase();
@@ -166,7 +231,7 @@
       if (answer.length >= 30) {
         clearInterval(timerInterval); // 타이머 중지
         document.getElementById('third-question').style.display = 'none';
-        alert('아무거나 친건 아니겠지요!! ');
+        alert('아무거나 친건 아니겠지요!! ' );
         document.getElementById('dog-image').style.display = 'block';
       } else {
         alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
@@ -206,35 +271,6 @@
         alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
       }
     }
-
-    // 엔터 키를 누르면 제출하기
-    document.getElementById('answer1').addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        checkAnswer1();
-      }
-    });
-
-    document.getElementById('answer2').addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        checkAnswer2();
-      }
-    });
-
-    document.getElementById('answer3').addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        checkAnswer3();
-      }
-    });
-
-    document.getElementById('answer4').addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        checkAnswer4();
-      }
-    });
   </script>
 </body>
 </html>
