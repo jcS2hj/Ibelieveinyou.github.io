@@ -101,7 +101,7 @@
     }
 
     /* 퀴즈 섹션 스타일 */
-    #question-form, #second-question, #third-question, #fourth-question, #dog-image, #prepare-message {
+    #first-question, #second-question, #third-question, #fourth-question, #dog-image, #prepare-message {
       margin-top: 20px;
       z-index: 1;
       max-width: 100%;
@@ -190,7 +190,7 @@
         padding: 20px;
       }
 
-      #question-form, #second-question, #third-question, #fourth-question {
+      #first-question, #second-question, #third-question, #fourth-question {
         width: 100%;
       }
 
@@ -207,7 +207,7 @@
   </style>
 </head>
 <body>
-  <h1>제 여자친구라면 답할 수 있는 문제!!!</h1>
+  <h1>제 여자친구라면 답할 수 있는 문제!!</h1>
   <div id="first-question">
     <label for="answer1">질문 1: 어떤 동물이 가장 사랑스러운가요?</label><br>
     <input type="text" id="answer1" name="answer1">
@@ -271,7 +271,7 @@
     function checkAnswer1() {
       var answer = document.getElementById('answer1').value.toLowerCase();
       if (answer === '강아지') {
-        document.getElementById('question-form').style.display = 'none';
+        document.getElementById('first-question').style.display = 'none';
         document.getElementById('second-question').style.display = 'block';
         document.getElementById('answer2').focus(); // 자동 커서 이동
         alert('생일 선물로 아주 멋진것을 받아버렸죠!!!');
