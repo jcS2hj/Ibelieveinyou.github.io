@@ -23,6 +23,7 @@
       transform: rotate(-45deg);
       opacity: 0.7;
       animation: heartAnimation 4s infinite;
+      z-index: -1; /* 배경 하트가 글자 아래에 오도록 설정 */
     }
 
     .heart::before, .heart::after {
@@ -67,6 +68,7 @@
     /* 퀴즈 섹션 스타일 */
     #question-form, #second-question, #third-question, #fourth-question, #dog-image, #prepare-message {
       margin-top: 20px;
+      z-index: 1; /* 글자가 배경 하트 위에 오도록 설정 */
     }
 
     #dog-image {
