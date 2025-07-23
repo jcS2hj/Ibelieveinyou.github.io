@@ -12,6 +12,12 @@
       padding: 0;
       overflow: hidden; /* 화면 밖으로 하트가 벗어나지 않도록 설정 */
       background-color: #fff;
+      position: relative; /* 부모 요소에 position 설정 */
+      height: 100vh; /* 화면 전체를 차지하도록 설정 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column; /* 내용이 수직으로 정렬되도록 설정 */
     }
 
     /* 배경 하트 애니메이션 */
