@@ -207,7 +207,7 @@
   </style>
 </head>
 <body>
-  <h1>제 여자친구라면 답할 수 있는 문제!!!</h1>
+  <h1>제 여자친구라면 답할 수 있는 문제!!</h1>
   <div id="question-form">
     <label for="answer1">질문 1: 어떤 동물이 가장 사랑스러운가요?</label><br>
     <input type="text" id="answer1" name="answer1">
@@ -323,10 +323,30 @@
 
         if (prepareTimeSeconds < 0) {
           clearInterval(prepareTimerInterval);
+          showPrepareMessage2();
+        }
+      }, 1000);
+    }
+    
+function showPrepareMessage2() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      document.getElementById('second-question').style.display = 'none';
+      document.getElementById('third-question').style.display = 'none';
+      document.getElementById('fourth-question').style.display = 'none';
+      prepareMessageDiv.style.display = 'block';
+
+      prepareTimerInterval = setInterval(function() {
+        document.getElementById('prepare-timer').style.display = 'block';
+        document.getElementById('prepare-timer-text').textContent = prepareTimeSeconds + '초';
+        prepareTimeSeconds--;
+
+        if (prepareTimeSeconds < 0) {
+          clearInterval(prepareTimerInterval);
           showFirstQuestion();
         }
       }, 1000);
     }
+    
     function showFirstQuestion() {
   // 첫 번째 질문을 다시 보이도록 설정
   document.getElementById('prepare-message').style.display = 'none';
