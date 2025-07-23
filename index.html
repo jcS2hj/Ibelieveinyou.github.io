@@ -36,6 +36,13 @@ body::before {
   animation: changeBackground 20s infinite; /* 배경 이미지 슬라이드 */
 }
 
+/* 질문 텍스트 크기 */
+label {
+  font-size: 24px; /* 질문 글자 크기 키우기 */
+  font-weight: bold; /* 글씨를 강조 */
+  margin-bottom: 10px;
+  display: block;
+    
 /* 배경 사진 슬라이드 애니메이션 */
 @keyframes changeBackground {
   0% {
@@ -51,6 +58,33 @@ body::before {
   /* ... 계속해서 나머지 이미지 추가 (1~11까지) */
   
 }
+
+/* 입력창 크기 */
+input[type="text"], textarea {
+  font-size: 20px; /* 답변 텍스트 크기 키우기 */
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+}
+
+/* 버튼 크기 */
+button {
+  font-size: 18px; /* 버튼 텍스트 크기 키우기 */
+  padding: 10px 20px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff3333; /* 버튼 호버 효과 */
+}
+  
 
 /* 하트 애니메이션 */
 .heart {
