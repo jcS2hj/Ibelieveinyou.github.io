@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,21 +20,19 @@
       align-items: center;
       flex-direction: column;
     }
-
-    .highlight {
+      .highlight {
       font-weight: bold;
       font-size: 2em;
       color: #ff4d4d;  /* 붉은 색으로 강조 */
       text-decoration: underline;
     }
 
-    h2 {
-      font-size: 2em;
-      font-weight: bold;
-      color: white;
+     h2 {
+    font-size: 2em; /* 글자 크기를 2배로 설정 */
+    font-weight: bold;
+    color: white;
     }
-
-    /* 배경 설정 */
+    /* 배경 이미지 설정 및 흐리게 처리 */
     body::before {
       content: '';
       position: absolute;
@@ -44,6 +43,7 @@
       background-image: url('https://jcs2hj.github.io/images/11.jpg');
       background-size: contain;
       background-position: center;
+      /* filter: blur(5px);  */
       z-index: -2;
       animation: changeBackground 20s infinite;
     }
@@ -60,7 +60,7 @@
       pointer-events: none;
     }
 
-    /* 배경 이미지 슬라이드 */
+    /* 배경 사진 슬라이드 애니메이션 */
     @keyframes changeBackground {
       0% {
         background-image: url('https://jcs2hj.github.io/images/11.jpg');
@@ -104,7 +104,7 @@
       left: 25px;
     }
 
-    /* 하트 애니메이션 */
+    /* 하트가 위로 올라가는 애니메이션 */
     @keyframes heartAnimation {
       0% {
         top: 100%;
@@ -195,6 +195,19 @@
       background-color: #ff3333;
     }
 
+    /* 배경 하트 애니메이션 */
+    @keyframes heart-float {
+      0% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-50px) scale(1.5);
+      }
+      100% {
+        transform: translateY(0) scale(1);
+      }
+    }
+
     /* 반응형 디자인 */
     @media (max-width: 768px) {
       body {
@@ -219,67 +232,242 @@
 </head>
 <body>
   <div id="first-question">
-    <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
-    <h2>어떤 동물이 가장 사랑스러운가요?</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
   </div>
 
-  <!-- 두 번째, 세 번째, 네 번째 질문들 생략 -->
+  <div id="second-question">
+    <h2>남자친구의 단점 5가지</h2>
+    <p style="color: red;">30글자 이상 작성해주세요!</p>
+    <textarea id="answer2" name="answer2" rows="4" cols="50"></textarea><br>
+    <button onclick="checkAnswer2()">제출</button>
+    <div id="timer">남은 시간: <span id="timer-text"></span></div>
+  </div>
+
+  <div id="third-question">
+    <h2><span class="highlight">남자친구의 장점</span> 5가지</h2>
+    <p style="color: red;">30글자 이상 작성해주세요!</p>
+    <textarea id="answer3" name="answer3" rows="4" cols="50"></textarea><br>
+    <button onclick="checkAnswer3()">제출</button>
+    <div id="timer3">남은 시간: <span id="timer3-text"></span></div>
+  </div>
+
+  <div id="fourth-question">
+    <h2>........ 사랑해라고 적어주세요....</h2>
+    <textarea id="answer4" name="answer4" rows="4" cols="50"></textarea><br>
+    <button onclick="checkAnswer4()">제출</button>
+  </div>
 
   <div id="result-image">
     <h2>마지막입니다!</h2>
     <img src="https://jcs2hj.github.io/images/11.jpg" alt="나랑 결혼해줄래?">
     <h2>나랑 결혼해줄래?</h2>
-    <button onclick="generateHeartBackground()">YES</button>
+  <button onclick="generateHeartBackground()">YES</button>
+  </div>
+
+  <div id="prepare-message">
+    <h2>아직 준비가 부족시군요!</h2>
+    <p>충분히 준비하세요.</p>
+    <div id="prepare-timer" class="countdown">남은 시간: <span id="prepare-timer-text"></span></div>
   </div>
 
   <script>
-    function generateHeartBackground() {
-      // 퀴즈 진행 후 화면 리셋
-      document.body.innerHTML = ''; // 모든 기존 내용 삭제
-      document.body.style.backgroundColor = "#fff"; // 배경을 흰색으로 설정
+     window.onload = function() {
+      document.getElementById('answer1').focus(); // 첫 번째 질문이 뜨면 자동으로 커서가 answer1에 위치
+    };
 
-      const heartCoordinates = [];
-      const numPoints = 100;
-      const radius = 100;
+    var timerSeconds = 6;
+    var prepareTimeSeconds = 10;
+    var timerInterval;
+    var prepareTimerInterval;
 
-      for (let i = 0; i <= numPoints; i++) {
-        let t = i * (Math.PI * 2 / numPoints);
-        let x = 16 * Math.pow(Math.sin(t), 3);
-        let y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-        heartCoordinates.push({
-          x: window.innerWidth / 2 + x * radius,
-          y: window.innerHeight / 2 + y * radius,
-        });
-      }
+    // 하트 생성 함수
+    function createHeart() {
+      var heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * window.innerWidth + 'px'; // 랜덤 x 좌표
+      document.body.appendChild(heart);
 
-      // 내부 및 외부 하트 모양 채우기
-      fillHeart(heartCoordinates);
+      setTimeout(() => {
+        heart.remove(); // 하트가 올라간 후 삭제
+      }, 4000); // 애니메이션 시간이 끝나면 삭제
     }
 
-    function fillHeart(heartCoordinates) {
-      const images = [
-        'https://jcs2hj.github.io/images/11.jpg',
-        'https://jcs2hj.github.io/images/22.jpg',
-        'https://jcs2hj.github.io/images/33.jpg'
-      ];
+    // 일정 시간 간격으로 하트 생성
+    setInterval(createHeart, 700);
 
-      // 하트 테두리 및 내부 채우기
-      heartCoordinates.forEach(coord => {
-        const imgDiv = document.createElement('div');
-        imgDiv.style.position = 'absolute';
-        imgDiv.style.left = `${coord.x - 25}px`;
-        imgDiv.style.top = `${coord.y - 25}px`;
-        imgDiv.style.width = '50px';
-        imgDiv.style.height = '50px';
-        imgDiv.style.backgroundImage = `url('${images[Math.floor(Math.random() * images.length)]}')`;
-        imgDiv.style.backgroundSize = 'cover';
-        imgDiv.style.zIndex = '1';
-        imgDiv.style.animation = 'none'; // 애니메이션 비활성화
-        document.body.appendChild(imgDiv);
-      });
+    function checkAnswer1() {
+      var answer = document.getElementById('answer1').value.toLowerCase();
+      if (answer === '강아지') {
+        document.getElementById('first-question').style.display = 'none';
+        document.getElementById('second-question').style.display = 'block';
+        document.getElementById('answer2').focus(); // 자동 커서 이동
+        alert('생일 선물로 아주 멋진것을 받아버렸죠!!!');
+        startTimer();
+      } else {
+        alert('틀렸어요! 다시 시도해보세요.');
+      }
+    }
+
+    function startTimer() {
+      var timerElement = document.getElementById('timer');
+      var timerTextElement = document.getElementById('timer-text');
+      timerElement.style.display = 'block';
+
+      timerInterval = setInterval(function() {
+        timerTextElement.textContent = timerSeconds + '초';
+        timerSeconds--;
+
+        if (timerSeconds < 0) {
+          clearInterval(timerInterval);
+          showPrepareMessage();
+        }
+      }, 1000);
+    }
+
+    function checkAnswer2() {
+      var answer = document.getElementById('answer2').value;
+      if (answer.length >= 30) {
+        clearInterval(timerInterval);
+        document.getElementById('second-question').style.display = 'none';
+        alert('훌륭한 순발력 제 여자친구가 맞군요!!!');
+        showThirdQuestion()
+      } else {
+        alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
+      }
+    }
+
+    function showPrepareMessage() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      document.getElementById('first-question').style.display = 'none';
+      document.getElementById('second-question').style.display = 'none';
+      document.getElementById('third-question').style.display = 'none';
+      document.getElementById('fourth-question').style.display = 'none';
+      prepareMessageDiv.style.display = 'block';
+
+      prepareTimerInterval = setInterval(function() {
+        document.getElementById('prepare-timer').style.display = 'block';
+        document.getElementById('prepare-timer-text').textContent = prepareTimeSeconds + '초';
+        prepareTimeSeconds--;
+
+        if (prepareTimeSeconds < 0) {
+          clearInterval(prepareTimerInterval);
+          showThirdQuestion();
+        }
+      }, 1000);
+    }
+  
+    function showThirdQuestion() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      prepareMessageDiv.style.display = 'none';
+      document.getElementById('third-question').style.display = 'block';
+      document.getElementById('answer3').focus(); 
+      startTimer3();
+    }
+
+    function startTimer3() {
+      var timerElement = document.getElementById('timer3');
+      var timerTextElement = document.getElementById('timer3-text');
+      timerElement.style.display = 'block';
+      timerSeconds = 10;
+
+      timerInterval = setInterval(function() {
+        timerTextElement.textContent = timerSeconds + '초';
+        timerSeconds--;
+
+        if (timerSeconds < 0) {
+          clearInterval(timerInterval);
+          showPrepareMessage2();
+        }
+      }, 1000);
+    }
+
+    function checkAnswer3() {
+      var answer = document.getElementById('answer3').value;
+      if (answer.length >= 30) {
+        clearInterval(timerInterval);
+        document.getElementById('third-question').style.display = 'none';
+        alert('아무거나 친건 아니겠지요!! ' );
+        document.getElementById('result-image').style.display = 'block';
+      } else {
+        alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
+      }
+    }
+
+    function showPrepareMessage2() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      document.getElementById('first-question').style.display = 'none';
+      document.getElementById('second-question').style.display = 'none';
+      document.getElementById('third-question').style.display = 'none';
+      document.getElementById('fourth-question').style.display = 'none';
+      prepareMessageDiv.style.display = 'block';
+
+      prepareTimerInterval = setInterval(function() {
+        document.getElementById('prepare-timer').style.display = 'block';
+        document.getElementById('prepare-timer-text').textContent = prepareTimeSeconds + '초';
+        prepareTimeSeconds--;
+
+        if (prepareTimeSeconds < 0) {
+          clearInterval(prepareTimerInterval);
+          showFourthQuestion();
+        }
+      }, 1000);
+    }
+
+    function showFourthQuestion() {
+      var prepareMessageDiv = document.getElementById('prepare-message');
+      prepareMessageDiv.style.display = 'none';
+      document.getElementById('fourth-question').style.display = 'block';
+      document.getElementById('answer4').focus();
+    }
+
+    function checkAnswer4() {
+      var answer = document.getElementById('answer4').value;
+      if (answer.includes('사랑해')) {
+        clearInterval(timerInterval);
+        document.getElementById('fourth-question').style.display = 'none';
+        document.getElementById('result-image').style.display = 'block';
+      } else {
+        alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
+      }
     }
   </script>
+
+  <script>
+  // 엔터 키를 누르면 해당 답변의 제출 버튼을 클릭하게 만드는 함수
+  document.getElementById('answer1').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();  // 기본 엔터 키 동작 방지
+      checkAnswer1();  // 답변 제출 함수 호출
+    }
+  });
+
+  // 질문 2 입력칸에 엔터 키 이벤트 추가
+  document.getElementById('answer2').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      checkAnswer2();  // 답변 제출 함수 호출
+    }
+  });
+
+  // 질문 3 입력칸에 엔터 키 이벤트 추가
+  document.getElementById('answer3').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      checkAnswer3();  // 답변 제출 함수 호출
+    }
+  });
+
+  // 질문 4 입력칸에 엔터 키 이벤트 추가
+  document.getElementById('answer4').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      checkAnswer4();  // 답변 제출 함수 호출
+    }
+  });
+</script>
+  
 </body>
 </html>
