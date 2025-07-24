@@ -228,6 +228,18 @@
         font-size: 36px;
       }
     }
+
+     #proposal {margin-top:20px;display:none;color:white;z-index:2;}
+    #heart-canvas {position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;overflow:hidden;}
+    .heart-tile {
+      position:absolute;
+      width:30px;height:30px;
+      background-size:cover;
+      background-position:center;
+      opacity:0;
+      transform:scale(0);
+    }
+    
   </style>
 </head>
 <body>
@@ -470,8 +482,7 @@
     }
   });
 </script>
-
-
+  
 <div id="heart-canvas"></div>
 
 <style>
@@ -548,24 +559,33 @@
   }
 
   function showHeartCollage() {
-    generateHeartCoordinates();
+  generateHeartCoordinates();
+  canvas.innerHTML = ''; // 초기화
+  const w = window.innerWidth;
+  const h = window.innerHeight;
 
-    canvas.innerHTML = ''; // 초기화
+  heartPositions.forEach((pos, index) => {
+    const photo = document.createElement('div');
+    photo.className = 'heart-photo';
+    const imgUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+    photo.style.backgroundImage = `url(${imgUrl})`;
+    photo.style.left = pos.x + 'px';
+    photo.style.top = pos.y + 'px';
 
-    heartPositions.forEach((pos, index) => {
-      const photo = document.createElement('div');
-      photo.className = 'heart-photo';
-      const imgUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
-      photo.style.backgroundImage = `url(${imgUrl})`;
-      photo.style.left = pos.x + 'px';
-      photo.style.top = pos.y + 'px';
+    // 시작 위치를 랜덤 바깥쪽으로 지정 (날아오는 효과)
+    const fromX = (Math.random() - 0.5) * w * 1.5; // -width ~ +width
+    const fromY = (Math.random() - 0.5) * h * 1.5;
 
-      const delay = index < 3 ? index * 1000 : 3000 + Math.random() * 1000;
-      photo.style.animationDelay = delay + 'ms';
+    // CSS 변수로 애니메이션에 전달
+    photo.style.setProperty('--from-x', fromX + 'px');
+    photo.style.setProperty('--from-y', fromY + 'px');
 
-      canvas.appendChild(photo);
-    });
-  }
+    const delay = Math.random() * 1000;
+    photo.style.animation = `flyToHeart 1s ${delay}ms forwards`;
+
+    canvas.appendChild(photo);
+  });
+}
 </script>
 
 </body>
