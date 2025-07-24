@@ -32,7 +32,6 @@
     font-weight: bold;
     color: white;
     }
-    
     /* 배경 이미지 설정 및 흐리게 처리 */
     body::before {
       content: '';
@@ -44,6 +43,7 @@
       background-image: url('https://jcs2hj.github.io/images/11.jpg');
       background-size: contain;
       background-position: center;
+      /* filter: blur(5px);  */
       z-index: -2;
       animation: changeBackground 20s infinite;
     }
@@ -75,14 +75,15 @@
 
     /* 하트 애니메이션 */
     .heart {
-  width: 100px;  /* 하트의 크기 */
-  height: 100px;
-  background-color: red;  /* 하트 색깔 */
-  position: absolute;
-  transform: rotate(-45deg);  /* 하트 모양 만들기 */
-  opacity: 0.8;
-  z-index: -1;  /* 배경에 가려지지 않도록 */
-}
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-color: red;
+      transform: rotate(-45deg);
+      opacity: 0.2;
+      animation: heartAnimation 4s infinite;
+      z-index: -1;
+    }
 
     .heart::before, .heart::after {
       content: '';
@@ -227,6 +228,18 @@
         font-size: 36px;
       }
     }
+
+     #proposal {margin-top:20px;display:none;color:white;z-index:2;}
+    #heart-canvas {position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;overflow:hidden;}
+    .heart-tile {
+      position:absolute;
+      width:30px;height:30px;
+      background-size:cover;
+      background-position:center;
+      opacity:0;
+      transform:scale(0);
+    }
+    
   </style>
 </head>
 <body>
@@ -260,11 +273,13 @@
   </div>
 
   <div id="result-image">
-    <h2>마지막입니다!</h2>
-    <img src="https://jcs2hj.github.io/images/11.jpg" alt="나랑 결혼해줄래?">
-    <h2>나랑 결혼해줄래?</h2>
-  <button onclick="generateHeartBackground()">YES</button>
+  <h2>정답입니다!</h2>
+  <img src="https://jcs2hj.github.io/images/11.jpg" alt="나랑 결혼해줄래?">
+  <div id="proposal">
+    <h2>나랑 결혼해 줄래??</h2>
+    <button onclick="showHeartCollage()">YES</button>
   </div>
+</div>
 
   <div id="prepare-message">
     <h2>아직 준비가 부족시군요!</h2>
@@ -432,76 +447,6 @@
         alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
       }
     }
-
-function generateHeartBackground() {
-  // 화면 초기화 (배경을 흰색으로 설정)
-  document.body.style.backgroundColor = 'white';  // 배경 색상을 흰색으로 설정
-  
-  // 기존 배경 이미지와 하트 애니메이션 제거
-  document.querySelector('body').style.backgroundImage = 'none';  // 배경 이미지 제거
-  var hearts = document.querySelectorAll('.heart');
-  hearts.forEach(function(heart) {
-    heart.remove();  // 기존 하트 삭제
-  });
-
-  // 이제 하트 모양의 이미지를 배경에 추가하는 로직 실행
-  fillHeartBackground();
-}
-
-    function fillHeartBackground() {
-  var heartWidth = 100;  // 하트 하나의 너비
-  var heartHeight = 100; // 하트 하나의 높이
-  var screenWidth = window.innerWidth;  // 화면 너비
-  var screenHeight = window.innerHeight;  // 화면 높이
-
-  var numHeartsX = Math.ceil(screenWidth / heartWidth);  // 가로로 몇 개의 하트
-  var numHeartsY = Math.ceil(screenHeight / heartHeight);  // 세로로 몇 개의 하트
-
-  // 화면을 채우는 하트 생성
-  for (var i = 0; i < numHeartsX * numHeartsY; i++) {
-    var heart = document.createElement('div');
-    heart.classList.add('heart');
-    
-    // 하트 위치 및 크기 설정
-    heart.style.width = heartWidth + 'px';
-    heart.style.height = heartHeight + 'px';
-    heart.style.left = (Math.random() * (screenWidth - heartWidth)) + 'px';
-    heart.style.top = (Math.random() * (screenHeight - heartHeight)) + 'px';
-
-    // 하트 모양을 채우기 위한 배경 이미지 설정
-    heart.style.backgroundImage = 'url("https://jcs2hj.github.io/images/11.jpg")';
-    heart.style.backgroundSize = 'cover';
-
-    // 하트의 형태 만들기 (사각형을 45도 회전시키기)
-    heart.style.transform = 'rotate(-45deg)';
-    heart.style.position = 'absolute';
-    document.body.appendChild(heart);
-  }
-}
-
-    function fillHeart(heartCoordinates) {
-      const images = [
-        'https://jcs2hj.github.io/images/11.jpg',
-        'https://jcs2hj.github.io/images/22.jpg',
-        'https://jcs2hj.github.io/images/33.jpg'
-      ];
-
-      // 하트 테두리 및 내부 채우기
-      heartCoordinates.forEach(coord => {
-        const imgDiv = document.createElement('div');
-        imgDiv.style.position = 'absolute';
-        imgDiv.style.left = `${coord.x - 25}px`;
-        imgDiv.style.top = `${coord.y - 25}px`;
-        imgDiv.style.width = '50px';
-        imgDiv.style.height = '50px';
-        imgDiv.style.backgroundImage = `url('${images[Math.floor(Math.random() * images.length)]}')`;
-        imgDiv.style.backgroundSize = 'cover';
-        imgDiv.style.zIndex = '1';
-        imgDiv.style.animation = 'none'; // 애니메이션 비활성화
-        document.body.appendChild(imgDiv);
-      });
-    }
-    
   </script>
 
   <script>
@@ -538,5 +483,101 @@ function generateHeartBackground() {
   });
 </script>
   
+<div id="heart-canvas"></div>
+
+<style>
+  #proposal {
+    margin-top: 20px;
+  }
+
+  #heart-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .heart-photo {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    opacity: 0;
+    animation: fadeInPhoto 0.6s forwards;
+  }
+
+  @keyframes fadeInPhoto {
+    from {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  const heartPositions = []; // 하트 형태 좌표 배열
+  const canvas = document.getElementById('heart-canvas');
+  const imageUrls = [
+    'https://jcs2hj.github.io/images/11.jpg',
+    'https://jcs2hj.github.io/images/22.jpg',
+    'https://jcs2hj.github.io/images/33.jpg',
+  ];
+
+  function generateHeartCoordinates() {
+    heartPositions.length = 0;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const centerX = w / 2;
+    const centerY = h / 2;
+
+    const scale = Math.min(w, h) / 32;
+
+    for (let angle = 0; angle < Math.PI * 2; angle += 0.05) {
+      const x = 16 * Math.pow(Math.sin(angle), 3);
+      const y = -(
+        13 * Math.cos(angle) -
+        5 * Math.cos(2 * angle) -
+        2 * Math.cos(3 * angle) -
+        Math.cos(4 * angle)
+      );
+
+      for (let r = 0; r < 8; r++) {
+        const offsetX = (x + (Math.random() - 0.5)) * scale + centerX;
+        const offsetY = (y + (Math.random() - 0.5)) * scale + centerY;
+        heartPositions.push({ x: offsetX, y: offsetY });
+      }
+    }
+  }
+
+  function showHeartCollage() {
+    generateHeartCoordinates();
+
+    canvas.innerHTML = ''; // 초기화
+
+    heartPositions.forEach((pos, index) => {
+      const photo = document.createElement('div');
+      photo.className = 'heart-photo';
+      const imgUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+      photo.style.backgroundImage = `url(${imgUrl})`;
+      photo.style.left = pos.x + 'px';
+      photo.style.top = pos.y + 'px';
+
+      const delay = index < 3 ? index * 1000 : 3000 + Math.random() * 1000;
+      photo.style.animationDelay = delay + 'ms';
+
+      canvas.appendChild(photo);
+    });
+  }
+</script>
+
 </body>
 </html>
