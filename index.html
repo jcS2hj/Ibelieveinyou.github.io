@@ -19,6 +19,7 @@
       align-items: center;
       flex-direction: column;
     }
+
     .highlight {
       font-weight: bold;
       font-size: 2em;
@@ -27,12 +28,12 @@
     }
 
     h2 {
-      font-size: 2em; /* 글자 크기를 2배로 설정 */
+      font-size: 2em;
       font-weight: bold;
       color: white;
     }
 
-    /* 배경 이미지 설정 및 흐리게 처리 */
+    /* 배경 설정 */
     body::before {
       content: '';
       position: absolute;
@@ -59,6 +60,7 @@
       pointer-events: none;
     }
 
+    /* 배경 이미지 슬라이드 */
     @keyframes changeBackground {
       0% {
         background-image: url('https://jcs2hj.github.io/images/11.jpg');
@@ -102,6 +104,7 @@
       left: 25px;
     }
 
+    /* 하트 애니메이션 */
     @keyframes heartAnimation {
       0% {
         top: 100%;
@@ -121,7 +124,7 @@
       }
     }
 
-    /* 기타 스타일들 */
+    /* 퀴즈 섹션 스타일 */
     #first-question, #second-question, #third-question, #fourth-question, #result-image, #prepare-message {
       margin-top: 20px;
       z-index: 1;
@@ -151,6 +154,7 @@
       margin-top: 20px;
     }
 
+    /* 텍스트 영역 스타일 */
     textarea {
       font-size: 16px;
       padding: 10px;
@@ -163,6 +167,7 @@
       resize: vertical;
     }
 
+    /* 입력창 스타일 */
     input[type="text"] {
       font-size: 18px;
       padding: 10px;
@@ -174,6 +179,7 @@
       box-sizing: border-box;
     }
 
+    /* 버튼 스타일 */
     button {
       font-size: 18px;
       padding: 10px 20px;
@@ -189,30 +195,22 @@
       background-color: #ff3333;
     }
 
-    @keyframes heart-float {
-      0% {
-        transform: translateY(0) scale(1);
-      }
-      50% {
-        transform: translateY(-50px) scale(1.5);
-      }
-      100% {
-        transform: translateY(0) scale(1);
-      }
-    }
-
+    /* 반응형 디자인 */
     @media (max-width: 768px) {
       body {
         padding: 20px;
       }
+
       #first-question, #second-question, #third-question, #fourth-question {
         width: 100%;
       }
+
       textarea, input[type="text"], button {
         font-size: 16px;
         width: 100%;
         max-width: 100%;
       }
+
       .countdown, #timer, #timer3, #timer4, #prepare-timer {
         font-size: 36px;
       }
@@ -227,27 +225,7 @@
     <button onclick="checkAnswer1()">제출</button>
   </div>
 
-  <div id="second-question">
-    <h2>남자친구의 단점 5가지</h2>
-    <p style="color: red;">30글자 이상 작성해주세요!</p>
-    <textarea id="answer2" name="answer2" rows="4" cols="50"></textarea><br>
-    <button onclick="checkAnswer2()">제출</button>
-    <div id="timer">남은 시간: <span id="timer-text"></span></div>
-  </div>
-
-  <div id="third-question">
-    <h2><span class="highlight">남자친구의 장점</span> 5가지</h2>
-    <p style="color: red;">30글자 이상 작성해주세요!</p>
-    <textarea id="answer3" name="answer3" rows="4" cols="50"></textarea><br>
-    <button onclick="checkAnswer3()">제출</button>
-    <div id="timer3">남은 시간: <span id="timer3-text"></span></div>
-  </div>
-
-  <div id="fourth-question">
-    <h2>........ 사랑해라고 적어주세요....</h2>
-    <textarea id="answer4" name="answer4" rows="4" cols="50"></textarea><br>
-    <button onclick="checkAnswer4()">제출</button>
-  </div>
+  <!-- 두 번째, 세 번째, 네 번째 질문들 생략 -->
 
   <div id="result-image">
     <h2>마지막입니다!</h2>
@@ -256,18 +234,12 @@
     <button onclick="generateHeartBackground()">YES</button>
   </div>
 
-  <div id="prepare-message">
-    <h2>아직 준비가 부족시군요!</h2>
-    <p>충분히 준비하세요.</p>
-    <button onclick="startOver()">다시 시작</button>
-  </div>
-
-  <div id="prepare-timer">준비시간: <span id="prepare-timer-text"></span></div>
-
   <script>
-    // 하트 애니메이션 및 배경
     function generateHeartBackground() {
-      // 하트 모양 배경 생성
+      // 퀴즈 진행 후 화면 리셋
+      document.body.innerHTML = ''; // 모든 기존 내용 삭제
+      document.body.style.backgroundColor = "#fff"; // 배경을 흰색으로 설정
+
       const heartCoordinates = [];
       const numPoints = 100;
       const radius = 100;
@@ -282,73 +254,32 @@
         });
       }
 
+      // 내부 및 외부 하트 모양 채우기
+      fillHeart(heartCoordinates);
+    }
+
+    function fillHeart(heartCoordinates) {
+      const images = [
+        'https://jcs2hj.github.io/images/11.jpg',
+        'https://jcs2hj.github.io/images/22.jpg',
+        'https://jcs2hj.github.io/images/33.jpg'
+      ];
+
+      // 하트 테두리 및 내부 채우기
       heartCoordinates.forEach(coord => {
-        let imgDiv = document.createElement('div');
+        const imgDiv = document.createElement('div');
         imgDiv.style.position = 'absolute';
         imgDiv.style.left = `${coord.x - 25}px`;
         imgDiv.style.top = `${coord.y - 25}px`;
         imgDiv.style.width = '50px';
         imgDiv.style.height = '50px';
-        imgDiv.style.backgroundImage = `url('https://jcs2hj.github.io/images/11.jpg')`;
+        imgDiv.style.backgroundImage = `url('${images[Math.floor(Math.random() * images.length)]}')`;
         imgDiv.style.backgroundSize = 'cover';
         imgDiv.style.zIndex = '1';
-        imgDiv.style.animation = 'shrinkAndMerge 3s forwards';
-        document.body.appendChild(imgDiv);
-      });
-
-      fillHeartInterior(heartCoordinates);
-    }
-
-    // 하트 내부 채우기
-    function fillHeartInterior(heartCoordinates) {
-      const numFillingPoints = 150;
-      const radius = 100;
-      const interiorCoordinates = [];
-      
-      for (let i = 0; i < numFillingPoints; i++) {
-        let t = Math.random() * Math.PI * 2;
-        let x = 16 * Math.pow(Math.sin(t), 3);
-        let y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-        interiorCoordinates.push({
-          x: window.innerWidth / 2 + x * radius * 0.8,
-          y: window.innerHeight / 2 + y * radius * 0.8,
-        });
-      }
-
-      interiorCoordinates.forEach(coord => {
-        let imgDiv = document.createElement('div');
-        imgDiv.style.position = 'absolute';
-        imgDiv.style.left = `${coord.x - 25}px`;
-        imgDiv.style.top = `${coord.y - 25}px`;
-        imgDiv.style.width = '50px';
-        imgDiv.style.height = '50px';
-        imgDiv.style.backgroundImage = `url('https://jcs2hj.github.io/images/11.jpg')`;
-        imgDiv.style.backgroundSize = 'cover';
-        imgDiv.style.zIndex = '1';
-        imgDiv.style.animation = 'none';
+        imgDiv.style.animation = 'none'; // 애니메이션 비활성화
         document.body.appendChild(imgDiv);
       });
     }
-    
-    // 애니메이션 키프레임
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @keyframes shrinkAndMerge {
-        0% {
-          transform: scale(1);
-          opacity: 1;
-        }
-        50% {
-          transform: scale(2);
-          opacity: 0.5;
-        }
-        100% {
-          transform: scale(0);
-          opacity: 0;
-        }
-      }
-    `;
-    document.head.appendChild(style);
   </script>
 </body>
 </html>
