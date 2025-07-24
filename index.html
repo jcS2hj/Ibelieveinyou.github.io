@@ -32,6 +32,7 @@
     font-weight: bold;
     color: white;
     }
+    
     /* 배경 이미지 설정 및 흐리게 처리 */
     body::before {
       content: '';
@@ -43,7 +44,6 @@
       background-image: url('https://jcs2hj.github.io/images/11.jpg');
       background-size: contain;
       background-position: center;
-      /* filter: blur(5px);  */
       z-index: -2;
       animation: changeBackground 20s infinite;
     }
@@ -433,6 +433,53 @@
         alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
       }
     }
+
+function generateHeartBackground() {
+      // 퀴즈 진행 후 화면 리셋
+      document.body.innerHTML = ''; // 모든 기존 내용 삭제
+      document.body.style.backgroundColor = "#fff"; // 배경을 흰색으로 설정
+
+      const heartCoordinates = [];
+      const numPoints = 100;
+      const radius = 100;
+
+      for (let i = 0; i <= numPoints; i++) {
+        let t = i * (Math.PI * 2 / numPoints);
+        let x = 16 * Math.pow(Math.sin(t), 3);
+        let y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+        heartCoordinates.push({
+          x: window.innerWidth / 2 + x * radius,
+          y: window.innerHeight / 2 + y * radius,
+        });
+      }
+
+      // 내부 및 외부 하트 모양 채우기
+      fillHeart(heartCoordinates);
+    }
+
+    function fillHeart(heartCoordinates) {
+      const images = [
+        'https://jcs2hj.github.io/images/11.jpg',
+        'https://jcs2hj.github.io/images/22.jpg',
+        'https://jcs2hj.github.io/images/33.jpg'
+      ];
+
+      // 하트 테두리 및 내부 채우기
+      heartCoordinates.forEach(coord => {
+        const imgDiv = document.createElement('div');
+        imgDiv.style.position = 'absolute';
+        imgDiv.style.left = `${coord.x - 25}px`;
+        imgDiv.style.top = `${coord.y - 25}px`;
+        imgDiv.style.width = '50px';
+        imgDiv.style.height = '50px';
+        imgDiv.style.backgroundImage = `url('${images[Math.floor(Math.random() * images.length)]}')`;
+        imgDiv.style.backgroundSize = 'cover';
+        imgDiv.style.zIndex = '1';
+        imgDiv.style.animation = 'none'; // 애니메이션 비활성화
+        document.body.appendChild(imgDiv);
+      });
+    }
+    
   </script>
 
   <script>
