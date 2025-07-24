@@ -33,7 +33,7 @@
       color: white; /* 흰색 글자 */
       z-index: 1;
     }
-    /* 배경 이미지 및 어두운 오버레이 */
+    /* 배경 이미지 및 어두운 오버레이 (rgba 사용) */
     body::before {
       content: '';
       position: absolute;
@@ -45,7 +45,7 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      filter: brightness(0.3); /* 어둡게 */
+      background-color: rgba(0, 0, 0, 0.7); /* 검정색 + 투명도 */
       z-index: -2;
       animation: changeBackground 20s infinite;
     }
@@ -92,8 +92,8 @@
     @keyframes heartAnimation {
       0% {
         top: 100%;
-        left: 0;
-        transform: scale(1) rotate(-45deg);
+        left: 50%;
+        transform: scale(0.5) rotate(-45deg);
         opacity: 0.8;
       }
       50% {
@@ -102,8 +102,8 @@
       }
       100% {
         top: -100px;
-        left: 100%;
-        transform: scale(1) rotate(-45deg);
+        left: 50%;
+        transform: scale(0) rotate(-45deg);
         opacity: 0;
       }
     }
@@ -274,51 +274,33 @@
   </div>
 
   <div id="fourth-question">
-    <h2>........ 사랑해라고 적어주세요....</h2>
-    <textarea id="answer4" name="answer4" rows="4" cols="50"></textarea><br />
+    <h2>마지막 질문! 정확히 "사랑해"라고 적어주세요.</h2>
+    <input type="text" id="answer4" name="answer4" /><br />
     <button onclick="checkAnswer4()">제출</button>
+    <div id="timer4">남은 시간: <span id="timer4-text"></span></div>
   </div>
 
-  <div id="dog-image">
-    <h2>정답입니다!</h2>
-    <img src="https://place-puppy.com/200x150" alt="강아지 사진" />
-    <!-- 마지막에 하트 모양 사진 보기 버튼 추가 -->
-    <div id="heart-button-container"></div> <!-- 버튼이 여기서 나옴 -->
+  <div id="dog-image" style="display: none;">
+    <h2>정답입니다! 강아지 이미지가 보입니다.</h2>
+    <img src="https://jcs2hj.github.io/images/11.jpg" alt="강아지" width="300" />
   </div>
 
-  <div id="prepare-message">
-    <h2>아직 준비가 부족시군요!</h2>
-    <p>충분히 준비하세요.</p>
-    <div id="prepare-timer" class="countdown">
-      남은 시간: <span id="prepare-timer-text"></span>
-    </div>
+  <div id="heart-button-container">
+    <div id="heart-container"></div>
   </div>
 
-  <!-- 큰 하트 모양 사진 타일 컨테이너 -->
-  <div id="heart-container"></div>
+  <div id="prepare-message" style="display: none;">
+    <h2>게임을 시작하려면 잠시 기다려 주세요...</h2>
+    <div id="prepare-timer-text"></div>
+  </div>
+
+  <div id="timer-container" class="countdown">남은 시간: <span id="prepare-timer-text"></span></div>
 
   <script>
-    window.onload = function () {
-      document.getElementById('answer1').focus(); // 첫 번째 질문 자동 커서
-    };
-
-    var timerSeconds = 6;
-    var prepareTimeSeconds = 10;
-    var timerInterval;
-    var prepareTimerInterval;
-
-    // 하트 생성 함수 (기존 배경용)
-    function createHeart() {
-      var heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.style.left = Math.random() * window.innerWidth + 'px'; // 랜덤 x 좌표
-      document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove(); // 하트 삭제
-      }, 4000);
-    }
-    setInterval(createHeart, 300);
+    let timerInterval;
+    let prepareTimerInterval;
+    const timerSeconds = 30; // 예시로 30초
+    const prepareTimeSeconds = 5;
 
     // 첫 번째 답 체크
     function checkAnswer1() {
@@ -407,47 +389,20 @@
       }, 1000);
     }
 
-    // 준비 메시지 및 타이머
-    function showPrepareMessage() {
-      document.getElementById('prepare-message').style.display = 'block';
-      var timeLeft = prepareTimeSeconds;
-      var timerText = document.getElementById('prepare-timer-text');
-      timerText.textContent = timeLeft;
-
-      clearInterval(prepareTimerInterval);
-      prepareTimerInterval = setInterval(() => {
-        timeLeft--;
-        timerText.textContent = timeLeft;
-        if (timeLeft <= 0) {
-          clearInterval(prepareTimerInterval);
-          location.reload();
-        }
-      }, 1000);
-    }
-
-    // 하트 모양 큰 사진 애니메이션 함수 (추가)
-    const heartContainer = document.getElementById('heart-container');
-    const images = [
-      'https://jcs2hj.github.io/images/11.jpg',
-      'https://jcs2hj.github.io/images/22.jpg',
-      'https://jcs2hj.github.io/images/33.jpg',
-    ];
-
+    // 하트 모양 큰 사진 애니메이션 함수
     function showHeartAnimation() {
-      heartContainer.style.display = 'flex';
-      heartContainer.innerHTML = '';
+      const heartContainer = document.getElementById('heart-container');
+      heartContainer.style.display = 'block';
 
-      const totalPics = 49; // 7x7 격자
-
-      for (let i = 0; i < totalPics; i++) {
-        const img = document.createElement('img');
-        img.src = images[i % images.length];
-        img.classList.add('tile-img');
-        heartContainer.appendChild(img);
-
+      for (let i = 0; i < 20; i++) {
         setTimeout(() => {
-          img.classList.add('visible');
-        }, i * 100);
+          const heart = document.createElement('div');
+          heart.classList.add('heart');
+          heart.style.left = `${Math.random() * 100}%`;
+          heart.style.animation = `heartAnimation 4s ease-in-out forwards`;
+
+          heartContainer.appendChild(heart);
+        }, i * 500);
       }
     }
   </script>
