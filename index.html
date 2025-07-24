@@ -110,7 +110,7 @@
         top: 100%;
         left: random(0, 100%);
         transform: scale(1) rotate(-45deg);
-        opacity: 0.8;
+        opacity: 0.4;
       }
       50% {
         transform: scale(1.5) rotate(-45deg);
@@ -129,7 +129,7 @@
     #second-question,
     #third-question,
     #fourth-question,
-    #dog-image,
+    #result-image,
     #prepare-message {
       margin-top: 20px;
       z-index: 1;
@@ -138,7 +138,7 @@
       width: 80%;
     }
 
-    #dog-image {
+    #result-image {
       display: none;
     }
 
@@ -307,9 +307,9 @@
     <button onclick="checkAnswer4()">제출</button>
   </div>
 
-  <div id="dog-image">
+  <div id="result-image">
     <h2>정답입니다!</h2>
-    <img src="https://place-puppy.com/200x150" alt="강아지 사진" />
+    <img src="https://jcs2hj.github.io/images/11.jpg" alt="나랑 결혼해줄래" />
   </div>
 
   <div id="prepare-message">
@@ -456,7 +456,7 @@
       if (answer.includes("사랑해")) {
         clearInterval(timerInterval);
         document.getElementById("fourth-question").style.display = "none";
-        document.getElementById("dog-image").style.display = "block";
+        document.getElementById("result-image").style.display = "block";
         showImageHeart(); // 사진 하트 띄우기
       } else {
         alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
