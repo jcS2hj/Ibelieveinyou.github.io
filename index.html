@@ -75,15 +75,14 @@
 
     /* 하트 애니메이션 */
     .heart {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      background-color: red;
-      transform: rotate(-45deg);
-      opacity: 0.2;
-      animation: heartAnimation 4s infinite;
-      z-index: -1;
-    }
+  width: 100px;  /* 하트의 크기 */
+  height: 100px;
+  background-color: red;  /* 하트 색깔 */
+  position: absolute;
+  transform: rotate(-45deg);  /* 하트 모양 만들기 */
+  opacity: 0.8;
+  z-index: -1;  /* 배경에 가려지지 않도록 */
+}
 
     .heart::before, .heart::after {
       content: '';
@@ -435,27 +434,50 @@
     }
 
 function generateHeartBackground() {
-      // 퀴즈 진행 후 화면 리셋
-      document.body.innerHTML = ''; // 모든 기존 내용 삭제
-      document.body.style.backgroundColor = "#fff"; // 배경을 흰색으로 설정
+  // 화면 초기화 (배경을 흰색으로 설정)
+  document.body.style.backgroundColor = 'white';  // 배경 색상을 흰색으로 설정
+  
+  // 기존 배경 이미지와 하트 애니메이션 제거
+  document.querySelector('body').style.backgroundImage = 'none';  // 배경 이미지 제거
+  var hearts = document.querySelectorAll('.heart');
+  hearts.forEach(function(heart) {
+    heart.remove();  // 기존 하트 삭제
+  });
 
-      const heartCoordinates = [];
-      const numPoints = 100;
-      const radius = 100;
+  // 이제 하트 모양의 이미지를 배경에 추가하는 로직 실행
+  fillHeartBackground();
+}
 
-      for (let i = 0; i <= numPoints; i++) {
-        let t = i * (Math.PI * 2 / numPoints);
-        let x = 16 * Math.pow(Math.sin(t), 3);
-        let y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-        heartCoordinates.push({
-          x: window.innerWidth / 2 + x * radius,
-          y: window.innerHeight / 2 + y * radius,
-        });
-      }
+    function fillHeartBackground() {
+  var heartWidth = 100;  // 하트 하나의 너비
+  var heartHeight = 100; // 하트 하나의 높이
+  var screenWidth = window.innerWidth;  // 화면 너비
+  var screenHeight = window.innerHeight;  // 화면 높이
 
-      // 내부 및 외부 하트 모양 채우기
-      fillHeart(heartCoordinates);
-    }
+  var numHeartsX = Math.ceil(screenWidth / heartWidth);  // 가로로 몇 개의 하트
+  var numHeartsY = Math.ceil(screenHeight / heartHeight);  // 세로로 몇 개의 하트
+
+  // 화면을 채우는 하트 생성
+  for (var i = 0; i < numHeartsX * numHeartsY; i++) {
+    var heart = document.createElement('div');
+    heart.classList.add('heart');
+    
+    // 하트 위치 및 크기 설정
+    heart.style.width = heartWidth + 'px';
+    heart.style.height = heartHeight + 'px';
+    heart.style.left = (Math.random() * (screenWidth - heartWidth)) + 'px';
+    heart.style.top = (Math.random() * (screenHeight - heartHeight)) + 'px';
+
+    // 하트 모양을 채우기 위한 배경 이미지 설정
+    heart.style.backgroundImage = 'url("https://jcs2hj.github.io/images/11.jpg")';
+    heart.style.backgroundSize = 'cover';
+
+    // 하트의 형태 만들기 (사각형을 45도 회전시키기)
+    heart.style.transform = 'rotate(-45deg)';
+    heart.style.position = 'absolute';
+    document.body.appendChild(heart);
+  }
+}
 
     function fillHeart(heartCoordinates) {
       const images = [
