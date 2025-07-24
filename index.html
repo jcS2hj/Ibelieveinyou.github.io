@@ -18,46 +18,57 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      color: white; /* 흰색 글자 */
-      z-index: 1;
     }
     .highlight {
       font-weight: bold;
       font-size: 2em;
-      color: #ff4d4d; /* 붉은 색 강조 */
+      color: #ff4d4d; /* 붉은 색으로 강조 */
       text-decoration: underline;
     }
+
     h2 {
-      font-size: 2em;
+      font-size: 2em; /* 글자 크기를 2배로 설정 */
       font-weight: bold;
-      color: white; /* 흰색 글자 */
-      z-index: 1;
+      color: white;
     }
-    /* 배경 이미지 및 어두운 오버레이 (rgba 사용) */
+    /* 배경 이미지 설정 및 흐리게 처리 */
     body::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('https://jcs2hj.github.io/images/11.jpg');
+      background-image: url("https://jcs2hj.github.io/images/11.jpg");
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      background-color: rgba(0, 0, 0, 0.7); /* 검정색 + 투명도 */
+      /* filter: blur(5px);  */
       z-index: -2;
       animation: changeBackground 20s infinite;
     }
+
+    body::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4); /* 검은색 40% 투명 */
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* 배경 사진 슬라이드 애니메이션 */
     @keyframes changeBackground {
       0% {
-        background-image: url('https://jcs2hj.github.io/images/11.jpg');
+        background-image: url("https://jcs2hj.github.io/images/11.jpg");
       }
       50% {
-        background-image: url('https://jcs2hj.github.io/images/22.jpg');
+        background-image: url("https://jcs2hj.github.io/images/22.jpg");
       }
       100% {
-        background-image: url('https://jcs2hj.github.io/images/33.jpg');
+        background-image: url("https://jcs2hj.github.io/images/33.jpg");
       }
     }
 
@@ -68,32 +79,37 @@
       height: 50px;
       background-color: red;
       transform: rotate(-45deg);
-      opacity: 0.4;
+      opacity: 0.2;
       animation: heartAnimation 4s infinite;
       z-index: -1;
     }
+
     .heart::before,
     .heart::after {
-      content: '';
+      content: "";
       position: absolute;
       width: 50px;
       height: 50px;
       border-radius: 50px;
       background-color: red;
     }
+
     .heart::before {
       left: 0;
       top: -25px;
     }
+
     .heart::after {
       top: 0;
       left: 25px;
     }
+
+    /* 하트가 위로 올라가는 애니메이션 */
     @keyframes heartAnimation {
       0% {
         top: 100%;
-        left: 50%;
-        transform: scale(0.5) rotate(-45deg);
+        left: random(0, 100%);
+        transform: scale(1) rotate(-45deg);
         opacity: 0.8;
       }
       50% {
@@ -102,8 +118,8 @@
       }
       100% {
         top: -100px;
-        left: 50%;
-        transform: scale(0) rotate(-45deg);
+        left: random(0, 100%);
+        transform: scale(1) rotate(-45deg);
         opacity: 0;
       }
     }
@@ -121,15 +137,18 @@
       padding: 10px;
       width: 80%;
     }
+
     #dog-image {
       display: none;
     }
+
     #second-question,
     #third-question,
     #fourth-question,
     #prepare-message {
       display: none;
     }
+
     #timer,
     #timer3,
     #timer4,
@@ -139,11 +158,14 @@
       margin-top: 20px;
       color: red;
     }
+
     .countdown {
       font-size: 64px;
       color: red;
       margin-top: 20px;
     }
+
+    /* 텍스트 영역 스타일 */
     textarea {
       font-size: 16px;
       padding: 10px;
@@ -154,9 +176,10 @@
       border: 2px solid #ccc;
       box-sizing: border-box;
       resize: vertical;
-      color: black; /* 검은색 입력 */
     }
-    input[type='text'] {
+
+    /* 입력창 스타일 */
+    input[type="text"] {
       font-size: 18px;
       padding: 10px;
       margin: 10px 0;
@@ -165,8 +188,9 @@
       border-radius: 8px;
       border: 2px solid #ccc;
       box-sizing: border-box;
-      color: black; /* 검은색 입력 */
     }
+
+    /* 버튼 스타일 */
     button {
       font-size: 18px;
       padding: 10px 20px;
@@ -177,27 +201,45 @@
       cursor: pointer;
       margin-top: 10px;
     }
+
     button:hover {
       background-color: #ff3333;
     }
 
+    /* 배경 하트 애니메이션 */
+    @keyframes heart-float {
+      0% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-50px) scale(1.5);
+      }
+      100% {
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* 반응형 디자인 */
     @media (max-width: 768px) {
       body {
         padding: 20px;
       }
+
       #first-question,
       #second-question,
       #third-question,
       #fourth-question {
         width: 100%;
       }
+
       textarea,
-      input[type='text'],
+      input[type="text"],
       button {
         font-size: 16px;
         width: 100%;
         max-width: 100%;
       }
+
       .countdown,
       #timer,
       #timer3,
@@ -207,43 +249,27 @@
       }
     }
 
-    /* --- 여기에 추가: 큰 하트 모양 컨테이너 --- */
-    #heart-container {
-      position: relative;
-      width: 400px;
-      height: 400px;
-      margin: 30px auto;
-      clip-path: polygon(
-        50% 0%,
-        90% 25%,
-        100% 62%,
-        75% 100%,
-        50% 85%,
-        25% 100%,
-        0% 62%,
-        10% 25%
-      ); /* 하트 모양 */
-      overflow: hidden;
-      background-color: transparent;
+    /* ❤️ 사진으로 만드는 큰 하트 레이아웃 */
+    #image-heart {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 360px;
       display: none;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-content: center;
-      gap: 2px;
-      z-index: 10;
+      z-index: 1000;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+      pointer-events: none; /* 클릭 무시 */
     }
-    .tile-img {
-      width: 60px;
-      height: 60px;
+    #image-heart img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      border-radius: 10px;
-      opacity: 0;
-      transform: scale(0.8);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .tile-img.visible {
+      border-radius: 6px;
       opacity: 1;
-      transform: scale(1);
     }
   </style>
 </head>
@@ -260,151 +286,244 @@
     <p style="color: red;">30글자 이상 작성해주세요!</p>
     <textarea id="answer2" name="answer2" rows="4" cols="50"></textarea><br />
     <button onclick="checkAnswer2()">제출</button>
-    <div id="timer">남은 시간: <span id="timer-text"></span></div>
+    <div id="timer">
+      남은 시간: <span id="timer-text"></span>
+    </div>
   </div>
 
   <div id="third-question">
-    <h2>
-      <span class="highlight">남자친구의 장점</span> 5가지
-    </h2>
+    <h2><span class="highlight">남자친구의 장점</span> 5가지</h2>
     <p style="color: red;">30글자 이상 작성해주세요!</p>
     <textarea id="answer3" name="answer3" rows="4" cols="50"></textarea><br />
     <button onclick="checkAnswer3()">제출</button>
-    <div id="timer3">남은 시간: <span id="timer3-text"></span></div>
+    <div id="timer3">
+      남은 시간: <span id="timer3-text"></span>
+    </div>
   </div>
 
   <div id="fourth-question">
-    <h2>마지막 질문! 정확히 "사랑해"라고 적어주세요.</h2>
-    <input type="text" id="answer4" name="answer4" /><br />
+    <h2>........ 사랑해라고 적어주세요....</h2>
+    <textarea id="answer4" name="answer4" rows="4" cols="50"></textarea><br />
     <button onclick="checkAnswer4()">제출</button>
-    <div id="timer4">남은 시간: <span id="timer4-text"></span></div>
   </div>
 
-  <div id="dog-image" style="display: none;">
-    <h2>정답입니다! 강아지 이미지가 보입니다.</h2>
-    <img src="https://jcs2hj.github.io/images/11.jpg" alt="강아지" width="300" />
+  <div id="dog-image">
+    <h2>정답입니다!</h2>
+    <img src="https://place-puppy.com/200x150" alt="강아지 사진" />
   </div>
 
-  <div id="heart-button-container">
-    <div id="heart-container"></div>
+  <div id="prepare-message">
+    <h2>아직 준비가 부족시군요!</h2>
+    <p>충분히 준비하세요.</p>
+    <div id="prepare-timer" class="countdown">
+      남은 시간: <span id="prepare-timer-text"></span>
+    </div>
   </div>
 
-  <div id="prepare-message" style="display: none;">
-    <h2>게임을 시작하려면 잠시 기다려 주세요...</h2>
-    <div id="prepare-timer-text"></div>
-  </div>
-
-  <div id="timer-container" class="countdown">남은 시간: <span id="prepare-timer-text"></span></div>
+  <!-- ❤️ 사진으로 만드는 하트 추가 -->
+  <div id="image-heart"></div>
 
   <script>
-    let timerInterval;
-    let prepareTimerInterval;
-    const timerSeconds = 30; // 예시로 30초
-    const prepareTimeSeconds = 5;
+    window.onload = function () {
+      document.getElementById("answer1").focus(); // 첫 번째 질문이 뜨면 자동으로 커서가 answer1에 위치
+    };
 
-    // 첫 번째 답 체크
+    var timerSeconds = 6;
+    var prepareTimeSeconds = 10;
+    var timerInterval;
+    var prepareTimerInterval;
+
+    // 하트 생성 함수 (기존 하트 애니메이션)
+    function createHeart() {
+      var heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * window.innerWidth + "px"; // 랜덤 x 좌표
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 4000);
+    }
+
+    // 초기에 5개 하트 생성, 이후 2초마다 추가
+    for (let i = 0; i < 5; i++) {
+      createHeart();
+    }
+    setInterval(createHeart, 2000);
+
     function checkAnswer1() {
-      var ans1 = document.getElementById('answer1').value.trim();
-      if (ans1 === '강아지') {
-        document.getElementById('first-question').style.display = 'none';
-        document.getElementById('second-question').style.display = 'block';
-        startTimer(timerSeconds, 'timer-text', () => {
-          alert('시간초과! 다시 시도해주세요.');
-          location.reload();
-        });
+      var answer = document.getElementById("answer1").value;
+      if (answer === "강아지") {
+        document.getElementById("first-question").style.display = "none";
+        document.getElementById("second-question").style.display = "block";
+        document.getElementById("answer2").focus();
+        startTimer();
       } else {
-        alert('틀렸습니다! 다시 입력해주세요.');
+        alert("틀렸습니다! 다시 시도하세요.");
       }
     }
 
-    // 두 번째 답 체크
-    function checkAnswer2() {
-      var ans2 = document.getElementById('answer2').value.trim();
-      if (ans2.length < 30) {
-        alert('30글자 이상 작성해주세요!');
-        return;
-      }
-      clearInterval(timerInterval);
-      document.getElementById('second-question').style.display = 'none';
-      document.getElementById('third-question').style.display = 'block';
-      startTimer(timerSeconds, 'timer3-text', () => {
-        alert('시간초과! 다시 시도해주세요.');
-        location.reload();
-      });
-    }
-
-    // 세 번째 답 체크
-    function checkAnswer3() {
-      var ans3 = document.getElementById('answer3').value.trim();
-      if (ans3.length < 30) {
-        alert('30글자 이상 작성해주세요!');
-        return;
-      }
-      clearInterval(timerInterval);
-      document.getElementById('third-question').style.display = 'none';
-      document.getElementById('fourth-question').style.display = 'block';
-      startTimer(timerSeconds, 'timer4-text', () => {
-        alert('시간초과! 다시 시도해주세요.');
-        location.reload();
-      });
-    }
-
-    // 네 번째 답 체크
-    function checkAnswer4() {
-      var ans4 = document.getElementById('answer4').value.trim();
-      if (ans4 !== '사랑해') {
-        alert('틀렸습니다! 정확히 "사랑해"라고 적어주세요.');
-        return;
-      }
-      clearInterval(timerInterval);
-      document.getElementById('fourth-question').style.display = 'none';
-      document.getElementById('dog-image').style.display = 'block';
-
-      // 마지막에 버튼 생성 (중복 생성 방지 위해 먼저 지우기)
-      const btnContainer = document.getElementById('heart-button-container');
-      btnContainer.innerHTML = '';
-      const heartBtn = document.createElement('button');
-      heartBtn.textContent = '하트 모양 사진 보기';
-      heartBtn.onclick = () => {
-        showHeartAnimation();
-        heartBtn.disabled = true; // 한 번만 누를 수 있게
-      };
-      btnContainer.appendChild(heartBtn);
-    }
-
-    // 타이머 함수
-    function startTimer(seconds, elementId, timeoutCallback) {
-      var timeLeft = seconds;
-      var timerText = document.getElementById(elementId);
-      timerText.textContent = timeLeft;
-
-      clearInterval(timerInterval);
+    function startTimer() {
+      timerSeconds = 6;
+      document.getElementById("timer").style.display = "block";
+      updateTimerText();
       timerInterval = setInterval(() => {
-        timeLeft--;
-        timerText.textContent = timeLeft;
-        if (timeLeft <= 0) {
+        timerSeconds--;
+        updateTimerText();
+        if (timerSeconds <= 0) {
           clearInterval(timerInterval);
-          timeoutCallback();
+          alert("시간 초과!");
+          location.reload();
         }
       }, 1000);
     }
 
-    // 하트 모양 큰 사진 애니메이션 함수
-    function showHeartAnimation() {
-      const heartContainer = document.getElementById('heart-container');
-      heartContainer.style.display = 'block';
+    function updateTimerText() {
+      document.getElementById("timer-text").textContent = timerSeconds + "초";
+    }
 
-      for (let i = 0; i < 20; i++) {
-        setTimeout(() => {
-          const heart = document.createElement('div');
-          heart.classList.add('heart');
-          heart.style.left = `${Math.random() * 100}%`;
-          heart.style.animation = `heartAnimation 4s ease-in-out forwards`;
-
-          heartContainer.appendChild(heart);
-        }, i * 500);
+    function checkAnswer2() {
+      var answer = document.getElementById("answer2").value;
+      if (answer.length >= 30) {
+        clearInterval(timerInterval);
+        document.getElementById("second-question").style.display = "none";
+        document.getElementById("third-question").style.display = "block";
+        document.getElementById("answer3").focus();
+        startTimer3();
+      } else {
+        alert("30글자 이상 작성해주세요!");
       }
     }
+
+    var timer3Seconds;
+
+    function startTimer3() {
+      timer3Seconds = 15;
+      document.getElementById("timer3").style.display = "block";
+      updateTimer3Text();
+      timerInterval = setInterval(() => {
+        timer3Seconds--;
+        updateTimer3Text();
+        if (timer3Seconds <= 0) {
+          clearInterval(timerInterval);
+          alert("시간 초과!");
+          location.reload();
+        }
+      }, 1000);
+    }
+
+    function updateTimer3Text() {
+      document.getElementById("timer3-text").textContent = timer3Seconds + "초";
+    }
+
+    function checkAnswer3() {
+      var answer = document.getElementById("answer3").value;
+      if (answer.length >= 30) {
+        clearInterval(timerInterval);
+        document.getElementById("third-question").style.display = "none";
+        document.getElementById("fourth-question").style.display = "block";
+        document.getElementById("answer4").focus();
+        startTimer4();
+      } else {
+        alert("30글자 이상 작성해주세요!");
+      }
+    }
+
+    var timer4Seconds;
+
+    function startTimer4() {
+      timer4Seconds = 10;
+      document.getElementById("timer4").style.display = "block";
+      updateTimer4Text();
+      timerInterval = setInterval(() => {
+        timer4Seconds--;
+        updateTimer4Text();
+        if (timer4Seconds <= 0) {
+          clearInterval(timerInterval);
+          alert("시간 초과!");
+          location.reload();
+        }
+      }, 1000);
+    }
+
+    function updateTimer4Text() {
+      document.getElementById("timer4-text").textContent = timer4Seconds + "초";
+    }
+
+    // ❤️ 마지막 문제 정답 체크 + 하트 사진 출력
+    function checkAnswer4() {
+      var answer = document.getElementById("answer4").value;
+      if (answer.includes("사랑해")) {
+        clearInterval(timerInterval);
+        document.getElementById("fourth-question").style.display = "none";
+        document.getElementById("dog-image").style.display = "block";
+        showImageHeart(); // 사진 하트 띄우기
+      } else {
+        alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
+      }
+    }
+
+    // ❤️ 사진으로 큰 하트 만드는 함수
+    function showImageHeart() {
+      const container = document.getElementById("image-heart");
+      container.innerHTML = "";
+
+      // 사용할 사진 3개 (원하는 URL로 바꿔도 됨)
+      const images = [
+        "https://placekitten.com/200/200",
+        "https://placekitten.com/201/200",
+        "https://placekitten.com/202/200",
+      ];
+
+      // 하트 모양: 6행 5열, 1은 사진 넣는 자리, 0은 빈칸
+      const heartShape = [
+        0, 1, 1, 1, 0,
+        1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1,
+        0, 1, 1, 1, 0,
+        0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0
+      ];
+
+      let imgIndex = 0;
+      heartShape.forEach((cell) => {
+        const div = document.createElement("div");
+        if (cell === 1) {
+          const img = document.createElement("img");
+          img.src = images[imgIndex % images.length];
+          imgIndex++;
+          div.appendChild(img);
+        }
+        container.appendChild(div);
+      });
+
+      container.style.display = "grid"; // 보여주기
+    }
+
+    // (추가) 엔터키로 제출 가능하게
+    document.getElementById("answer1").addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        checkAnswer1();
+      }
+    });
+    document.getElementById("answer2").addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        checkAnswer2();
+      }
+    });
+    document.getElementById("answer3").addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        checkAnswer3();
+      }
+    });
+    document.getElementById("answer4").addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        checkAnswer4();
+      }
+    });
   </script>
 </body>
 </html>
