@@ -239,23 +239,12 @@
       opacity:0;
       transform:scale(0);
     }
-
-    <!-- 영상 영역 -->
-<div id="video-container" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 9999;">
-  <video id="love-video" width="100%" height="100%" autoplay>
-    <source src="https://jcs2hj.github.io/images/aa.mp4" type="video/mp4">
-    당신의 브라우저는 비디오를 지원하지 않습니다.
-  </video>
-  <button id="continue-button" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; padding: 20px 40px; background-color: #ff4d4d; color: white; border: none; border-radius: 10px; cursor: pointer;">
-    To Be Continued...
-  </button>
-</div>
     
   </style>
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -283,6 +272,21 @@
     <button onclick="checkAnswer4()">제출</button>
   </div>
 
+
+<!-- 영상 영역 -->
+<div id="video-container" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 9999;">
+  <video id="love-video" autoplay muted playsinline style="width: 100%; height: 100%; object-fit: cover;">
+    <source src="https://jcs2hj.github.io/images/aa.mp4" type="video/mp4">
+    비디오를 지원하지 않는 브라우저입니다.
+  </video>
+  <button id="continue-button" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; padding: 20px 40px; background-color: #ff4d4d; color: white; border: none; border-radius: 10px; cursor: pointer;">
+    To Be Continued...
+  </button>
+</div>
+
+
+
+  
   <div id="result-image">
   <h2>정답입니다!</h2>
   <img src="https://jcs2hj.github.io/images/11.jpg" alt="나랑 결혼해줄래?">
@@ -452,37 +456,43 @@
     }
 
     function checkAnswer4() {
-      var answer = document.getElementById('answer4').value;
-      if (answer.includes('사랑해')) {
-        clearInterval(timerInterval);
-        
-       // 모든 질문 숨기기
+  var answer = document.getElementById('answer4').value;
+  if (answer.includes('사랑해')) {
+    clearInterval(timerInterval);
     document.getElementById('fourth-question').style.display = 'none';
 
-    // 🔥 영상 보여주기
     const videoContainer = document.getElementById('video-container');
     const video = document.getElementById('love-video');
     const continueButton = document.getElementById('continue-button');
 
+    // 영상 영역 표시
     videoContainer.style.display = 'block';
-    video.play();
 
-    // 영상 끝나면 버튼 표시
-    video.onended = function() {
+    // 재생 보장
+    video.muted = true; // autoplay 되도록 muted 필수
+    video.play().catch(err => {
+      console.error("영상 자동재생 실패:", err);
+    });
+
+    // 영상 종료되면 버튼 보이기
+    video.onended = function () {
       continueButton.style.display = 'block';
     };
 
-    // 버튼 클릭 시 결과 이미지 표시
-    continueButton.onclick = function() {
+    // 버튼 클릭 시 result 화면 전환
+    continueButton.onclick = function () {
       videoContainer.style.display = 'none';
       document.getElementById('result-image').style.display = 'block';
       document.getElementById('proposal').style.display = 'block';
     };
-        
-      } else {
-        alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
-      }
-    }
+
+  } else {
+    alert('"사랑해"를 포함해주세요.');
+  }
+}
+
+
+    
   </script>
 
   <script>
