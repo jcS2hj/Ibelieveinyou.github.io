@@ -1,3 +1,4 @@
+예스 버튼이랑 하트 빈거 바로나타나는 현상까지 돼있음
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -228,6 +229,18 @@
         font-size: 36px;
       }
     }
+
+     #proposal {margin-top:20px;display:none;color:white;z-index:2;}
+    #heart-canvas {position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;overflow:hidden;}
+    .heart-tile {
+      position:absolute;
+      width:30px;height:30px;
+      background-size:cover;
+      background-position:center;
+      opacity:0;
+      transform:scale(0);
+    }
+    
   </style>
 </head>
 <body>
@@ -261,11 +274,13 @@
   </div>
 
   <div id="result-image">
-    <h2>마지막입니다!</h2>
-    <img src="https://jcs2hj.github.io/images/11.jpg" alt="나랑 결혼해줄래?">
-    <h2>나랑 결혼해줄래?</h2>
-  <button onclick="generateHeartBackground()">YES</button>
+  <h2>정답입니다!</h2>
+  <img src="https://jcs2hj.github.io/images/11.jpg" alt="나랑 결혼해줄래?">
+  <div id="proposal">
+    <h2>나랑 결혼해 줄래??</h2>
+    <button onclick="showHeartCollage()">YES</button>
   </div>
+</div>
 
   <div id="prepare-message">
     <h2>아직 준비가 부족시군요!</h2>
@@ -391,6 +406,7 @@
         document.getElementById('third-question').style.display = 'none';
         alert('아무거나 친건 아니겠지요!! ' );
         document.getElementById('result-image').style.display = 'block';
+        document.getElementById('proposal').style.display = 'block';
       } else {
         alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
       }
@@ -429,6 +445,7 @@
         clearInterval(timerInterval);
         document.getElementById('fourth-question').style.display = 'none';
         document.getElementById('result-image').style.display = 'block';
+        document.getElementById('proposal').style.display = 'block';
       } else {
         alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
       }
@@ -469,5 +486,101 @@
   });
 </script>
   
+<div id="heart-canvas"></div>
+
+<style>
+  #proposal {
+    margin-top: 20px;
+  }
+
+  #heart-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .heart-photo {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    opacity: 0;
+    animation: fadeInPhoto 0.6s forwards;
+  }
+
+  @keyframes fadeInPhoto {
+    from {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  const heartPositions = []; // 하트 형태 좌표 배열
+  const canvas = document.getElementById('heart-canvas');
+  const imageUrls = [
+    'https://jcs2hj.github.io/images/11.jpg',
+    'https://jcs2hj.github.io/images/22.jpg',
+    'https://jcs2hj.github.io/images/33.jpg',
+  ];
+
+  function generateHeartCoordinates() {
+    heartPositions.length = 0;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const centerX = w / 2;
+    const centerY = h / 2;
+
+    const scale = Math.min(w, h) / 32;
+
+    for (let angle = 0; angle < Math.PI * 2; angle += 0.05) {
+      const x = 16 * Math.pow(Math.sin(angle), 3);
+      const y = -(
+        13 * Math.cos(angle) -
+        5 * Math.cos(2 * angle) -
+        2 * Math.cos(3 * angle) -
+        Math.cos(4 * angle)
+      );
+
+      for (let r = 0; r < 8; r++) {
+        const offsetX = (x + (Math.random() - 0.5)) * scale + centerX;
+        const offsetY = (y + (Math.random() - 0.5)) * scale + centerY;
+        heartPositions.push({ x: offsetX, y: offsetY });
+      }
+    }
+  }
+
+  function showHeartCollage() {
+    generateHeartCoordinates();
+
+    canvas.innerHTML = ''; // 초기화
+
+    heartPositions.forEach((pos, index) => {
+      const photo = document.createElement('div');
+      photo.className = 'heart-photo';
+      const imgUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+      photo.style.backgroundImage = `url(${imgUrl})`;
+      photo.style.left = pos.x + 'px';
+      photo.style.top = pos.y + 'px';
+
+      const delay = index < 3 ? index * 1000 : 3000 + Math.random() * 1000;
+      photo.style.animationDelay = delay + 'ms';
+
+      canvas.appendChild(photo);
+    });
+  }
+</script>
+
 </body>
 </html>
