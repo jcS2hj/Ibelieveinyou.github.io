@@ -239,12 +239,23 @@
       opacity:0;
       transform:scale(0);
     }
+
+    <div id="video-container" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:black; z-index:2000; justify-content:center; align-items:center;">
+  <video id="introVideo" autoplay muted style="width:100%; height:100%; object-fit:cover;">
+    <source src="https://jcs2hj.github.io/images/aa.mp4" type="video/mp4">
+    이 브라우저는 비디오를 지원하지 않습니다.
+  </video>
+  <button id="continueBtn"
+          style="display:none; position:absolute; padding:20px 40px; font-size:24px; background:#ff4d4d; color:white; border:none; border-radius:8px; cursor:pointer; z-index:2001;">
+    TO BE CONTINUED
+  </button>
+</div>
     
   </style>
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -404,8 +415,10 @@
         clearInterval(timerInterval);
         document.getElementById('third-question').style.display = 'none';
         alert('아무거나 친건 아니겠지요!! ' );
-        document.getElementById('result-image').style.display = 'block';
-        document.getElementById('proposal').style.display = 'block';
+        document.getElementById('fourth-question').style.display = 'none';
+
+        // 👇 영상 먼저 보여주기
+        showVideoBeforeResult();
       } else {
         alert('답변이 너무 짧습니다. 30글자 이상 작성해주세요.');
       }
@@ -443,8 +456,10 @@
       if (answer.includes('사랑해')) {
         clearInterval(timerInterval);
         document.getElementById('fourth-question').style.display = 'none';
-        document.getElementById('result-image').style.display = 'block';
-        document.getElementById('proposal').style.display = 'block';
+        document.getElementById('fourth-question').style.display = 'none';
+    
+        // 👇 영상 먼저 보여주기
+        showVideoBeforeResult();
       } else {
         alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
       }
@@ -558,6 +573,27 @@
       heartPositions.push({ x: offsetX, y: offsetY });
     }
   }
+}
+
+  function showVideoBeforeResult() {
+  const vidContainer = document.getElementById('video-container');
+  const video = document.getElementById('introVideo');
+  const btn = document.getElementById('continueBtn');
+
+  vidContainer.style.display = 'flex';
+  video.currentTime = 0;
+  video.play();
+
+  video.onended = () => {
+    btn.style.display = 'block';
+  };
+
+  btn.onclick = () => {
+    vidContainer.remove();
+    document.getElementById('result-image').style.display = 'block';
+    document.getElementById('proposal').style.display = 'block';
+    showHeartCollage(); // 하트 애니메이션 실행
+  };
 }
 
  function showHeartCollage() {
