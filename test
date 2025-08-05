@@ -1,5 +1,6 @@
 예스 버튼이랑 하트 빈거 바로나타나는 현상까지 돼있음
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -245,7 +246,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -511,7 +512,7 @@
     background-position: center;
     border-radius: 4px;
     opacity: 0;
-    animation: fadeInPhoto 0.6s forwards;
+    transition: all 1.5s ease-in;
   }
 
   @keyframes fadeInPhoto {
@@ -561,25 +562,104 @@
     }
   }
 
-  function showHeartCollage() {
-    generateHeartCoordinates();
+ function showHeartCollage() {
+  generateHeartCoordinates();
+  canvas.innerHTML = '';
 
-    canvas.innerHTML = ''; // 초기화
+  const total = heartPositions.length;
+  const slowCount = 30; // 처음에 천천히 등장할 수량
+  const maxDelay = 1000;
+  const minDelay = 50;
 
-    heartPositions.forEach((pos, index) => {
+  // 🔹 1. 처음 30장은 천천히 하나씩 등장
+  function showSlowly(index) {
+    if (index >= slowCount) {
+      showFast(index); // 이후부터는 빠르게 전환
+      return;
+    }
+
+    const pos = heartPositions[index];
+    const photo = document.createElement('div');
+    photo.className = 'heart-photo';
+    const imgUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+    photo.style.backgroundImage = `url(${imgUrl})`;
+
+    // 시작 위치: 화면 밖 랜덤
+    const startFrom = Math.floor(Math.random() * 4);
+    let startX, startY;
+    if (startFrom === 0) {
+      startX = Math.random() * window.innerWidth;
+      startY = -50;
+    } else if (startFrom === 1) {
+      startX = Math.random() * window.innerWidth;
+      startY = window.innerHeight + 50;
+    } else if (startFrom === 2) {
+      startX = -50;
+      startY = Math.random() * window.innerHeight;
+    } else {
+      startX = window.innerWidth + 50;
+      startY = Math.random() * window.innerHeight;
+    }
+
+    photo.style.left = `${startX}px`;
+    photo.style.top = `${startY}px`;
+    canvas.appendChild(photo);
+
+    setTimeout(() => {
+      photo.style.left = `${pos.x}px`;
+      photo.style.top = `${pos.y}px`;
+      photo.style.opacity = 1;
+    }, 10);
+
+    setTimeout(() => {
+      showSlowly(index + 1);
+    }, 300); // 💡 느린 속도 (사진당 0.3초 간격)
+  }
+
+  // 🔹 2. 나머지 하트는 가속도로 빠르게 표시
+  function showFast(startIndex) {
+    for (let i = startIndex; i < total; i++) {
+      const pos = heartPositions[i];
       const photo = document.createElement('div');
       photo.className = 'heart-photo';
       const imgUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
       photo.style.backgroundImage = `url(${imgUrl})`;
-      photo.style.left = pos.x + 'px';
-      photo.style.top = pos.y + 'px';
 
-      const delay = index < 3 ? index * 1000 : 3000 + Math.random() * 1000;
-      photo.style.animationDelay = delay + 'ms';
+      const startFrom = Math.floor(Math.random() * 4);
+      let startX, startY;
+      if (startFrom === 0) {
+        startX = Math.random() * window.innerWidth;
+        startY = -50;
+      } else if (startFrom === 1) {
+        startX = Math.random() * window.innerWidth;
+        startY = window.innerHeight + 50;
+      } else if (startFrom === 2) {
+        startX = -50;
+        startY = Math.random() * window.innerHeight;
+      } else {
+        startX = window.innerWidth + 50;
+        startY = Math.random() * window.innerHeight;
+      }
 
+      photo.style.left = `${startX}px`;
+      photo.style.top = `${startY}px`;
       canvas.appendChild(photo);
-    });
+
+      const t = (i - slowCount) / (total - slowCount); // 가속도 구간의 비율
+      const delay = maxDelay * Math.pow(1 - t, 2);
+
+      setTimeout(() => {
+        photo.style.left = `${pos.x}px`;
+        photo.style.top = `${pos.y}px`;
+        photo.style.opacity = 1;
+      }, delay);
+    }
   }
+
+  // 시작!
+  showSlowly(0);
+}
+  
 </script>
 
 </body>
