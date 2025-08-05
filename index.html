@@ -561,12 +561,18 @@
 }
 
  function showHeartCollage() {
-  generateHeartCoordinates();
+     // 1. 기존 내용 모두 지우기
   canvas.innerHTML = '';
+
+  // 2. 배경 검은색으로 설정
+  canvas.style.backgroundColor = 'black';
+   
+  generateHeartCoordinates();
+ 
 
   const total = heartPositions.length;
   const maxDelay = 1000;  // 첫 이미지 딜레이 (1초)
-  const minDelay = 100;    // 마지막 이미지 딜레이 (0.05초)
+  const minDelay = 200;    // 마지막 이미지 딜레이 (0.05초)
 
   const maxConcurrent = 10; // 동시에 나타날 수 있는 최대 사진 개수
   let activeCount = 0;
