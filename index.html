@@ -244,7 +244,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -565,15 +565,10 @@
   canvas.innerHTML = '';
 
   const total = heartPositions.length;
-  let index = 0;
+  const maxDelay = 1000;  // 첫 이미지 딜레이 (1초)
+  const minDelay = 50;    // 마지막 이미지 딜레이 (0.05초)
 
-  const maxDelay = 1000; // 시작 간격 (1초)
-  const minDelay = 50;   // 마지막 간격 (0.05초)
-
-  function placeNextHeart() {
-    if (index >= total) return;
-
-    const pos = heartPositions[index];
+  heartPositions.forEach((pos, index) => {
     const photo = document.createElement('div');
     photo.className = 'heart-photo';
 
@@ -600,26 +595,18 @@
 
     photo.style.left = `${startX}px`;
     photo.style.top = `${startY}px`;
-
     canvas.appendChild(photo);
 
-    // 애니메이션 효과
+    // 💡 가속도 계산: 처음은 느리게, 뒤로 갈수록 점점 빨라짐
+    const t = index / total; // 0 ~ 1
+    const delay = maxDelay * Math.pow(1 - t, 2); // 지수 가속도 (처음 느리고 빨라짐)
+
     setTimeout(() => {
       photo.style.left = `${pos.x}px`;
       photo.style.top = `${pos.y}px`;
       photo.style.opacity = 1;
-    }, 10);
-
-    // 다음 하트 지연시간 계산 (초반엔 느리게, 후반엔 빠르게)
-    const progress = index / total; // 0 ~ 1
-    const delay = maxDelay * Math.pow(1 - progress, 3); // 지수 가속
-
-    index++;
-    setTimeout(placeNextHeart, delay); // 다음 하트 등장 예약
-  }
-
-  // 시작!
-  placeNextHeart();
+    }, delay);
+  });
 }
   
 </script>
