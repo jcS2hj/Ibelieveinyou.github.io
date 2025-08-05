@@ -244,7 +244,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -565,10 +565,8 @@
   canvas.innerHTML = '';
 
   let total = heartPositions.length;
-
-  let initialDelay = 300; // 시작 딜레이 (빠르게 시작)
-  let minDelay = 20;      // 최소 딜레이 (더 빠르게)
-  let currentDelay = 0;   // 누적 시간 (각 하트마다 이 시간에 나타남)
+  let maxDelay = 1000;  // 1초
+  let minDelay = 100;   // 0.1초
 
   heartPositions.forEach((pos, index) => {
     const photo = document.createElement('div');
@@ -577,7 +575,6 @@
     const imgUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
     photo.style.backgroundImage = `url(${imgUrl})`;
 
-    // 시작 위치: 화면 밖에서 랜덤하게 날아오기
     const startFrom = Math.floor(Math.random() * 4);
     let startX, startY;
 
@@ -598,18 +595,17 @@
     photo.style.left = `${startX}px`;
     photo.style.top = `${startY}px`;
 
+    // 가속도 빠르게 적용
+    const progress = index / total;
+    const delay = maxDelay - ((maxDelay - minDelay) * Math.pow(progress, 3)); // 세제곱
+
     canvas.appendChild(photo);
 
-    // 점점 빠르게 등장하도록 가속 곡선 적용
     setTimeout(() => {
       photo.style.left = `${pos.x}px`;
       photo.style.top = `${pos.y}px`;
       photo.style.opacity = 1;
-    }, currentDelay);
-
-    // 다음 하트는 더 짧은 간격으로 나타나게 (지수적으로 감소)
-    let delayDecrease = (initialDelay - minDelay) / total;
-    currentDelay += Math.max(minDelay, initialDelay - delayDecrease * index);
+    }, delay);
   });
 }
   
