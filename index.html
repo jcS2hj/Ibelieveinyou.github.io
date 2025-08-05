@@ -244,7 +244,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -540,7 +540,7 @@
   const h = window.innerHeight;
   const centerX = w / 2;
   const centerY = h / 2;
-  const scale = Math.min(w, h) / 30;
+  const scale = Math.min(w, h) / 32;
 
   for (let angle = 0; angle < Math.PI * 2; angle += 0.05) {
     const x = 16 * Math.pow(Math.sin(angle), 3);
@@ -568,7 +568,7 @@
   const maxDelay = 1000;  // 첫 이미지 딜레이 (1초)
   const minDelay = 50;    // 마지막 이미지 딜레이 (0.05초)
 
-  const maxConcurrent = 20; // 동시에 나타날 수 있는 최대 사진 개수
+  const maxConcurrent = 10; // 동시에 나타날 수 있는 최대 사진 개수
   let activeCount = 0;
 
   heartPositions.forEach((pos, index) => {
