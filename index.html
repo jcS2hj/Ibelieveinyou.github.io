@@ -244,7 +244,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -535,30 +535,30 @@
   ];
 
   function generateHeartCoordinates() {
-    heartPositions.length = 0;
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const centerX = w / 2;
-    const centerY = h / 2;
+  heartPositions.length = 0;
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const centerX = w / 2;
+  const centerY = h / 2;
+  const scale = Math.min(w, h) / 32;
 
-    const scale = Math.min(w, h) / 32;
+  for (let angle = 0; angle < Math.PI * 2; angle += 0.05) {
+    const x = 16 * Math.pow(Math.sin(angle), 3);
+    const y = -(
+      13 * Math.cos(angle) -
+      5 * Math.cos(2 * angle) -
+      2 * Math.cos(3 * angle) -
+      Math.cos(4 * angle)
+    );
 
-    for (let angle = 0; angle < Math.PI * 2; angle += 0.05) {
-      const x = 16 * Math.pow(Math.sin(angle), 3);
-      const y = -(
-        13 * Math.cos(angle) -
-        5 * Math.cos(2 * angle) -
-        2 * Math.cos(3 * angle) -
-        Math.cos(4 * angle)
-      );
-
-      for (let r = 0; r < 8; r++) {
-        const offsetX = (x + (Math.random() - 0.5)) * scale + centerX;
-        const offsetY = (y + (Math.random() - 0.5)) * scale + centerY;
-        heartPositions.push({ x: offsetX, y: offsetY });
-      }
+    // 🔥 핵심: 테두리뿐만 아니라 하트 안쪽까지 좌표를 반복해서 찍는다.
+    for (let r = 0.2; r <= 1; r += 0.2) {
+      const offsetX = (x * r + (Math.random() - 0.5)) * scale + centerX;
+      const offsetY = (y * r + (Math.random() - 0.5)) * scale + centerY;
+      heartPositions.push({ x: offsetX, y: offsetY });
     }
   }
+}
 
  function showHeartCollage() {
   generateHeartCoordinates();
