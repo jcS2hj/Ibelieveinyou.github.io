@@ -244,7 +244,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -552,7 +552,7 @@
     );
 
     // 🔥 핵심: 테두리뿐만 아니라 하트 안쪽까지 좌표를 반복해서 찍는다.
-    for (let r = 0.2; r <= 1; r += 0.1) {  // 💡 더 자주 찍기
+    for (let r = 0.2; r <= 1; r += 0.2) {  // 💡 더 자주 찍기
       const offsetX = (x * r + (Math.random() * 0.3 - 0.15)) * scale + centerX;
       const offsetY = (y * r + (Math.random() * 0.3 - 0.15)) * scale + centerY;
       heartPositions.push({ x: offsetX, y: offsetY });
@@ -566,9 +566,9 @@
 
   const total = heartPositions.length;
   const maxDelay = 1000;  // 첫 이미지 딜레이 (1초)
-  const minDelay = 50;    // 마지막 이미지 딜레이 (0.05초)
+  const minDelay = 100;    // 마지막 이미지 딜레이 (0.05초)
 
-  const maxConcurrent = 10; // 동시에 나타날 수 있는 최대 사진 개수
+  const maxConcurrent = 30; // 동시에 나타날 수 있는 최대 사진 개수
   let activeCount = 0;
 
   heartPositions.forEach((pos, index) => {
