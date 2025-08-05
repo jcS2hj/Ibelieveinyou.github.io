@@ -244,7 +244,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -564,9 +564,9 @@
   generateHeartCoordinates();
   canvas.innerHTML = '';
 
-  let total = heartPositions.length;
-  let maxDelay = 1000;  // 1초
-  let minDelay = 100;   // 0.1초
+  const total = heartPositions.length;
+  const maxDelay = 1000;  // 첫 이미지 딜레이 (1초)
+  const minDelay = 50;    // 마지막 이미지 딜레이 (0.05초)
 
   heartPositions.forEach((pos, index) => {
     const photo = document.createElement('div');
@@ -575,6 +575,7 @@
     const imgUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
     photo.style.backgroundImage = `url(${imgUrl})`;
 
+    // 시작 위치: 화면 밖 랜덤 방향
     const startFrom = Math.floor(Math.random() * 4);
     let startX, startY;
 
@@ -594,12 +595,11 @@
 
     photo.style.left = `${startX}px`;
     photo.style.top = `${startY}px`;
-
-    // 가속도 빠르게 적용
-    const progress = index / total;
-    const delay = maxDelay - ((maxDelay - minDelay) * Math.pow(progress, 3)); // 세제곱
-
     canvas.appendChild(photo);
+
+    // 💡 가속도 계산: 처음은 느리게, 뒤로 갈수록 점점 빨라짐
+    const t = index / total; // 0 ~ 1
+    const delay = maxDelay * Math.pow(1 - t, 2); // 지수 가속도 (처음 느리고 빨라짐)
 
     setTimeout(() => {
       photo.style.left = `${pos.x}px`;
