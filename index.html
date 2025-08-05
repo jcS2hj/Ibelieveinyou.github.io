@@ -244,7 +244,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -565,8 +565,10 @@
   canvas.innerHTML = '';
 
   let total = heartPositions.length;
-  let maxDelay = 1000;  // 첫 번째 이미지 이동 딜레이 (1초)
-  let minDelay = 100;   // 마지막 이미지 이동 딜레이 (0.1초)
+
+  let initialDelay = 1000; // 시작은 1초 간격
+  let finalDelay = 50;     // 마지막은 0.05초 간격
+  let currentDelay = initialDelay;
 
   heartPositions.forEach((pos, index) => {
     const photo = document.createElement('div');
@@ -579,16 +581,16 @@
     const startFrom = Math.floor(Math.random() * 4);
     let startX, startY;
 
-    if (startFrom === 0) { // 위
+    if (startFrom === 0) {
       startX = Math.random() * window.innerWidth;
       startY = -50;
-    } else if (startFrom === 1) { // 아래
+    } else if (startFrom === 1) {
       startX = Math.random() * window.innerWidth;
       startY = window.innerHeight + 50;
-    } else if (startFrom === 2) { // 왼쪽
+    } else if (startFrom === 2) {
       startX = -50;
       startY = Math.random() * window.innerHeight;
-    } else { // 오른쪽
+    } else {
       startX = window.innerWidth + 50;
       startY = Math.random() * window.innerHeight;
     }
@@ -597,16 +599,17 @@
     photo.style.left = `${startX}px`;
     photo.style.top = `${startY}px`;
 
-    // 애니메이션 시간 계산: 처음은 느리고 점점 빨라짐
-    const delay = maxDelay - ((maxDelay - minDelay) * (index / total));
-
     canvas.appendChild(photo);
 
+    // 이미지가 하나씩, 점점 빠르게 등장
     setTimeout(() => {
       photo.style.left = `${pos.x}px`;
       photo.style.top = `${pos.y}px`;
       photo.style.opacity = 1;
-    }, delay);
+    }, currentDelay);
+
+    // 다음 이미지 딜레이는 조금 줄어듦
+    currentDelay += Math.max(finalDelay, initialDelay - (index * 10)); // 최소 50ms까지
   });
 }
   
