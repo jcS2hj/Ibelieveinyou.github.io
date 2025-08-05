@@ -540,7 +540,7 @@
   const h = window.innerHeight;
   const centerX = w / 2;
   const centerY = h / 2;
-  const scale = Math.min(w, h) / 34;
+  const scale = Math.min(w, h) / 32;
 
   for (let angle = 0; angle < Math.PI * 2; angle += 0.05) {
     const x = 16 * Math.pow(Math.sin(angle), 3);
@@ -552,7 +552,7 @@
     );
 
     // 🔥 핵심: 테두리뿐만 아니라 하트 안쪽까지 좌표를 반복해서 찍는다.
-    for (let r = 0.2; r <= 1; r += 0.1) {  // 💡 더 자주 찍기
+    for (let r = 0.2; r <= 1; r += 0.15) {  // 💡 더 자주 찍기
       const offsetX = (x * r + (Math.random() * 0.3 - 0.15)) * scale + centerX;
       const offsetY = (y * r + (Math.random() * 0.3 - 0.15)) * scale + centerY;
       heartPositions.push({ x: offsetX, y: offsetY });
@@ -568,7 +568,7 @@
   const maxDelay = 1000;  // 첫 이미지 딜레이 (1초)
   const minDelay = 100;    // 마지막 이미지 딜레이 (0.05초)
 
-  const maxConcurrent = 5; // 동시에 나타날 수 있는 최대 사진 개수
+  const maxConcurrent = 10; // 동시에 나타날 수 있는 최대 사진 개수
   let activeCount = 0;
 
   heartPositions.forEach((pos, index) => {
