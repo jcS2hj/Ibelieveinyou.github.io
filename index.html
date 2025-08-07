@@ -243,7 +243,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -486,10 +486,21 @@
   
 <div id="heart-canvas"></div>
 
-<video id="proposal-video" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:10000; object-fit:cover;" preload="auto">
+<!-- 비디오 -->
+<video id="proposal-video"
+  style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
+         width:70vw; height:auto; z-index:10000; object-fit:contain; background:black;"
+  preload="auto"
+>
   <source src="https://jcs2hj.github.io/images/aa.mp4" type="video/mp4">
   브라우저가 video 태그를 지원하지 않습니다.
 </video>
+
+<!-- 비디오 컨트롤러 -->
+<div id="video-controls" style="display:none; position:fixed; bottom:20px; right:20px; z-index:10001;">
+  <button onclick="toggleMute()">🔇/🔊</button>
+  <button onclick="togglePlayPause()">⏯️</button>
+</div>
   
 
 <style>
@@ -631,14 +642,32 @@
   
 function playProposalVideo() {
   const video = document.getElementById('proposal-video');
+  const controls = document.getElementById('video-controls');
+
   video.style.display = 'block';
+  controls.style.display = 'block';
   video.play();
 
-  // 영상이 끝나면 하트 콜라주 보여주기
-  video.onended = function() {
+  // 영상 끝나면 하트 콜라주
+  video.onended = function () {
     video.style.display = 'none';
+    controls.style.display = 'none';
     showHeartCollage();
   };
+}
+
+function toggleMute() {
+  const video = document.getElementById('proposal-video');
+  video.muted = !video.muted;
+}
+
+function togglePlayPause() {
+  const video = document.getElementById('proposal-video');
+  if (video.paused) {
+    video.play();
+  } else {
+    video.pause();
+  }
 }
   
   
