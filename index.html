@@ -243,7 +243,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -488,8 +488,6 @@
 
 <!-- 비디오 -->
 <video id="proposal-video"
-  style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
-         width:70vw; height:auto; z-index:10000; object-fit:contain; background:black;"
   preload="auto"
 >
   <source src="https://jcs2hj.github.io/images/aa.mp4" type="video/mp4">
@@ -506,6 +504,17 @@
   #proposal {
     margin-top: 20px;
   }
+  
+  #proposal-video {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  background: black;
+  object-fit: contain;
+}
 
   #heart-canvas {
     position: fixed;
@@ -642,27 +651,45 @@
 function playProposalVideo() {
   const video = document.getElementById('proposal-video');
   const controls = document.getElementById('video-controls');
-  
+
   video.style.display = 'block';
   controls.style.display = 'block';
   video.muted = false;
+
+  // 영상이 로드되면 크기 계산 시작
+  video.onloadedmetadata = function () {
+    const videoRatio = video.videoWidth / video.videoHeight;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    // 화면 기준 비율 유지하며 최대 70%로
+    const maxWidth = windowWidth * 0.7;
+    const maxHeight = windowHeight * 0.7;
+
+    let finalWidth, finalHeight;
+
+    // 화면 비율에 따라 가로 또는 세로 기준으로 조정
+    if (maxWidth / videoRatio <= maxHeight) {
+      // 가로 기준
+      finalWidth = maxWidth;
+      finalHeight = maxWidth / videoRatio;
+    } else {
+      // 세로 기준
+      finalHeight = maxHeight;
+      finalWidth = maxHeight * videoRatio;
+    }
+
+    video.style.width = finalWidth + 'px';
+    video.style.height = finalHeight + 'px';
+  };
+
   video.play();
 
-  // 영상 끝나면 하트 콜라주
   video.onended = function () {
     video.style.display = 'none';
     controls.style.display = 'none';
     showHeartCollage();
   };
-}
-
-function togglePlayPause() {
-  const video = document.getElementById('proposal-video');
-  if (video.paused) {
-    video.play();
-  } else {
-    video.pause();
-  }
 }
   
   
