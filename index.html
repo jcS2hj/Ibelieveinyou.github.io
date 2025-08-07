@@ -243,7 +243,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -276,7 +276,7 @@
   <img src="https://jcs2hj.github.io/images/11.jpg" alt="나랑 결혼해줄래?">
   <div id="proposal">
     <h2>나랑 결혼해 줄래??</h2>
-    <button onclick="showHeartCollage()">YES</button>
+    <button onclick="playProposalVideo()">YES</button>
   </div>
 </div>
 
@@ -486,6 +486,12 @@
   
 <div id="heart-canvas"></div>
 
+<video id="proposal-video" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:10000; object-fit:cover;" preload="auto">
+  <source src="https://jcs2hj.github.io/images/aa.mp4" type="video/mp4">
+  브라우저가 video 태그를 지원하지 않습니다.
+</video>
+  
+
 <style>
   #proposal {
     margin-top: 20px;
@@ -622,6 +628,19 @@
     }, delay);
   });
 }
+  
+function playProposalVideo() {
+  const video = document.getElementById('proposal-video');
+  video.style.display = 'block';
+  video.play();
+
+  // 영상이 끝나면 하트 콜라주 보여주기
+  video.onended = function() {
+    video.style.display = 'none';
+    showHeartCollage();
+  };
+}
+  
   
 </script>
 
