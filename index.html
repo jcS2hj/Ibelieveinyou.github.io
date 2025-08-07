@@ -642,7 +642,10 @@
 function playProposalVideo() {
   const video = document.getElementById('proposal-video');
   const controls = document.getElementById('video-controls');
+  const canvas = document.getElementById('heart-canvas');
 
+  canvas.style.backgroundColor = 'black';
+  
   video.style.display = 'block';
   controls.style.display = 'block';
   video.muted = false;
