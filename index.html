@@ -232,8 +232,12 @@
   </style>
 </head>
 <body>
+<div id="wrong-image" style="display: none; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;">
+  <img src="https://jcs2hj.github.io/images/nn.jpg" alt="틀렸을 때 이미지" style="width: 100px; height: auto; border: 2px solid red; border-radius: 8px;">
+</div>
+  
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>25년 본인이 남자친구 생일에 준 선물은(3글자)?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -511,10 +515,6 @@
 
 
 </script>
-
-<div id="wrong-image" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: black; z-index: 10000; justify-content: center; align-items: center;">
-  <img src="https://jcs2hj.github.io/images/nn.jpg" alt="틀렸을 때 이미지" style="max-width: 50%; max-height: 50%;">
-</div>
   
 <div id="heart-canvas"></div>
 
