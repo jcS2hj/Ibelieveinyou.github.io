@@ -18,6 +18,10 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      background-image: url('https://jcs2hj.github.io/images/1.jpg'); /* 초기값 */
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1s ease-in-out;
     }
       .highlight {
       font-weight: bold;
@@ -33,19 +37,17 @@
     }
     /* 배경 이미지 설정 및 흐리게 처리 */
     body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('https://jcs2hj.github.io/images/11.jpg');
-      background-size: contain;
-      background-position: center;
-      /* filter: blur(5px);  */
-      z-index: -2;
-      animation: changeBackground 20s infinite;
-    }
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+  transition: background-image 1s ease-in-out;
+}
 
     body::after {
       content: '';
@@ -229,25 +231,7 @@
     }
 
      #proposal {margin-top:20px;display:none;color:white;z-index:2;}
-    #heart-canvas {position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;overflow:hidden;
-                  function addBearArms() {
-                    const canvas = document.getElementById('heart-canvas');
-                  
-                    const leftArm = document.createElement('div');
-                    leftArm.className = 'bear-arm';
-                    leftArm.style.top = '55%';
-                    leftArm.style.left = '20%';
-                  
-                    const rightArm = document.createElement('div');
-                    rightArm.className = 'bear-arm';
-                    rightArm.style.top = '55%';
-                    rightArm.style.left = '70%';
-                    rightArm.style.animationDelay = '0.75s';
-                  
-                    canvas.appendChild(leftArm);
-                    canvas.appendChild(rightArm);
-                    }  
-                  }
+    #heart-canvas {position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;overflow:hidden;}
     .heart-tile {
       position:absolute;
       width:30px;height:30px;
@@ -261,7 +245,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -304,6 +288,36 @@
     <div id="prepare-timer" class="countdown">남은 시간: <span id="prepare-timer-text"></span></div>
   </div>
 
+
+
+  <script>
+  const backgroundImages = Array.from({ length: 27 }, (_, i) =>
+    `https://jcs2hj.github.io/images/${i + 1}.jpg`
+  );
+
+  let currentImageIndex = 0;
+
+  function changeBackgroundImage() {
+    const bodyBefore = document.querySelector('body::before');
+    // CSS에서 직접 못 접근하므로 body 스타일에 backgroundImage 직접 지정
+    document.body.style.setProperty(
+      '--background-image-url',
+      `url('${backgroundImages[currentImageIndex]}')`
+    );
+
+    document.body.style.backgroundImage = `url('${backgroundImages[currentImageIndex]}')`;
+
+    currentImageIndex = (currentImageIndex + 1) % backgroundImages.length;
+  }
+
+  // 처음 이미지 설정
+  changeBackgroundImage();
+
+  // 5초마다 변경
+  setInterval(changeBackgroundImage, 4000);
+</script>
+  
+  
   <script>
      window.onload = function() {
       document.getElementById('answer1').focus(); // 첫 번째 질문이 뜨면 자동으로 커서가 answer1에 위치
@@ -566,36 +580,19 @@
       opacity: 1;
     }
   }
-
-  @keyframes swing-arm {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(25deg); }
-    100% { transform: rotate(0deg); }
-  }
-  
-  .bear-arm {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  background-image: url('https://jcs2hj.github.io/images/11.jpg');
-  background-size: cover;
-  background-position: center;
-  border-radius: 50%;
-  animation: swing-arm 2s infinite ease-in-out;
-  transform-origin: top center;
-  z-index: 9999;
-}
-    
 </style>
 
 <script>
   const heartPositions = []; // 하트 형태 좌표 배열
   const canvas = document.getElementById('heart-canvas');
-  const imageUrls = [
-    'https://jcs2hj.github.io/images/11.jpg',
-    'https://jcs2hj.github.io/images/22.jpg',
-    'https://jcs2hj.github.io/images/33.jpg',
-  ];
+  const imageUrls = [];
+    for (let i = 1; i <= 27; i++) {
+      imageUrls.push(`https://jcs2hj.github.io/images/${i}.jpg`);
+    }
+    for (let i = imageUrls.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [imageUrls[i], imageUrls[j]] = [imageUrls[j], imageUrls[i]];
+    }
 
   function generateBearCoordinates() {
   heartPositions.length = 0;
@@ -638,15 +635,21 @@
 }
 
  function showHeartCollage() {
+     // 1. 기존 내용 모두 지우기
   canvas.innerHTML = '';
+
+  // 2. 배경 검은색으로 설정
   canvas.style.backgroundColor = 'black';
+   
   generateBearCoordinates();
+ 
 
   const total = heartPositions.length;
-  const maxDelay = 1000;
-  const maxConcurrent = 10;
+  const maxDelay = 1000;  // 첫 이미지 딜레이 (1초)
+  const minDelay = 200;    // 마지막 이미지 딜레이 (0.05초)
+
+  const maxConcurrent = 10; // 동시에 나타날 수 있는 최대 사진 개수
   let activeCount = 0;
-  let armsAdded = false;
 
   heartPositions.forEach((pos, index) => {
     const photo = document.createElement('div');
@@ -655,51 +658,44 @@
     const imgUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
     photo.style.backgroundImage = `url(${imgUrl})`;
 
-    // 시작 위치 (화면 밖)
-    let startX = Math.random() * window.innerWidth;
-    let startY = -50;
+    // 시작 위치 설정 (화면 밖)
+    const startFrom = Math.floor(Math.random() * 4);
+    let startX, startY;
+
+    if (startFrom === 0) {
+      startX = Math.random() * window.innerWidth;
+      startY = -50;
+    } else if (startFrom === 1) {
+      startX = Math.random() * window.innerWidth;
+      startY = window.innerHeight + 50;
+    } else if (startFrom === 2) {
+      startX = -50;
+      startY = Math.random() * window.innerHeight;
+    } else {
+      startX = window.innerWidth + 50;
+      startY = Math.random() * window.innerHeight;
+    }
 
     photo.style.left = `${startX}px`;
     photo.style.top = `${startY}px`;
     canvas.appendChild(photo);
 
-    const t = index / total;
+    const t = index / total; // 0 ~ 1
+    // 지수 가속도 유지하되, 딜레이 조절
     let delay = maxDelay * Math.pow(1 - t, 2);
+
+    // 최대 동시 등장 제한용 추가 딜레이 계산
     const batch = Math.floor(index / maxConcurrent);
-    const batchDelay = batch * 100;
+    const batchDelay = batch * 100;  // 0.1초 간격으로 묶음마다 딜레이 증가
+
     delay += batchDelay;
 
     setTimeout(() => {
-      // 목표 위치로 이동
-      photo.style.transition = 'all 1.2s ease-in-out';
       photo.style.left = `${pos.x}px`;
       photo.style.top = `${pos.y}px`;
-      photo.style.opacity = '1';
-      photo.style.animation = 'fadeInPhoto 1.5s forwards';
-
-      // 팔 한 번만 추가
-      if (!armsAdded && index > total * 0.7) {
-        armsAdded = true;
-        addBearArms();
-      }
+      photo.style.opacity = 1;
     }, delay);
   });
-}
-
-  function addBearArms() {
-  const leftArm = document.createElement('div');
-  leftArm.className = 'bear-arm';
-  leftArm.style.top = '55%';
-  leftArm.style.left = '25%';
-
-  const rightArm = document.createElement('div');
-  rightArm.className = 'bear-arm';
-  rightArm.style.top = '55%';
-  rightArm.style.left = '65%';
-  rightArm.style.animationDelay = '0.75s'; // 서로 반대 타이밍
-
-  document.body.appendChild(leftArm);
-  document.body.appendChild(rightArm);
 }
   
 function playProposalVideo() {
@@ -757,7 +753,6 @@ function hideVideoAndStartCollage() {
   skipButton.style.display = 'none';
   showHeartCollage(); // 콜라주 시작
 }
-
   
 </script>
 
