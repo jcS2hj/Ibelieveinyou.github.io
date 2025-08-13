@@ -243,7 +243,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -563,14 +563,14 @@
   heartPositions.length = 0;
   const w = window.innerWidth, h = window.innerHeight;
   const centerX = w / 2, centerY = h / 2;
-  const scale = Math.min(w, h) / 10;
+  const scale = Math.min(w, h) / 12; // 전체 사이즈 조절
 
-  // 원 형태 좌표 생성 헬퍼
-  function addCircle(cx, cy, r) {
-    for (let angle = 0; angle < Math.PI * 2; angle += 0.15) {
-      for (let rad = 0.2; rad <= 1; rad += 0.25) {
-        const x = cx + Math.cos(angle) * r * rad + (Math.random() * 0.4 - 0.2);
-        const y = cy + Math.sin(angle) * r * rad + (Math.random() * 0.4 - 0.2);
+  // 원 좌표 생성기 (밀도 조절 포함)
+  function addCircle(cx, cy, r, density = 0.2, jitter = 0.2) {
+    for (let angle = 0; angle < Math.PI * 2; angle += 0.1) {
+      for (let rad = 0.3; rad <= 1; rad += density) {
+        const x = cx + Math.cos(angle) * r * rad + (Math.random() * jitter - jitter / 2);
+        const y = cy + Math.sin(angle) * r * rad + (Math.random() * jitter - jitter / 2);
         heartPositions.push({
           x: x * scale + centerX,
           y: y * scale + centerY
@@ -579,11 +579,24 @@
     }
   }
 
-  // 곰돌이 구성: 몸통, 머리, 왼/오른쪽 귀
-  addCircle(0, 2, 3);    // 몸통
-  addCircle(0, -2, 2.2); // 머리
-  addCircle(-1.7, -3.7, 0.8); // 왼쪽 귀
-  addCircle(1.7, -3.7, 0.8);  // 오른쪽 귀
+  // ░ 곰돌이 모양 정의 ░
+
+  // 귀 (작고 위쪽)
+  addCircle(-2, -4, 0.8, 0.15); // 왼쪽 귀
+  addCircle(2, -4, 0.8, 0.15);  // 오른쪽 귀
+
+  // 머리 (크고 중심 위)
+  addCircle(0, -2.2, 2.2, 0.18);  // 머리
+
+  // 눈 (작고 밀도 높게)
+  addCircle(-0.8, -2.5, 0.3, 0.1, 0.05);
+  addCircle(0.8, -2.5, 0.3, 0.1, 0.05);
+
+  // 코 (가운데 작게)
+  addCircle(0, -1.5, 0.3, 0.1, 0.03);
+
+  // 몸통 (더 크고 아래)
+  addCircle(0, 1.5, 3.5, 0.18); // 몸통
 }
 
  function showHeartCollage() {
