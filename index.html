@@ -261,7 +261,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -638,21 +638,15 @@
 }
 
  function showHeartCollage() {
-     // 1. 기존 내용 모두 지우기
   canvas.innerHTML = '';
-
-  // 2. 배경 검은색으로 설정
   canvas.style.backgroundColor = 'black';
-   
   generateBearCoordinates();
- 
 
   const total = heartPositions.length;
-  const maxDelay = 1000;  // 첫 이미지 딜레이 (1초)
-  const minDelay = 200;    // 마지막 이미지 딜레이 (0.05초)
-
-  const maxConcurrent = 10; // 동시에 나타날 수 있는 최대 사진 개수
+  const maxDelay = 1000;
+  const maxConcurrent = 10;
   let activeCount = 0;
+  let armsAdded = false;
 
   heartPositions.forEach((pos, index) => {
     const photo = document.createElement('div');
@@ -661,44 +655,35 @@
     const imgUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
     photo.style.backgroundImage = `url(${imgUrl})`;
 
-    // 시작 위치 설정 (화면 밖)
-    const startFrom = Math.floor(Math.random() * 4);
-    let startX, startY;
-
-    if (startFrom === 0) {
-      startX = Math.random() * window.innerWidth;
-      startY = -50;
-    } else if (startFrom === 1) {
-      startX = Math.random() * window.innerWidth;
-      startY = window.innerHeight + 50;
-    } else if (startFrom === 2) {
-      startX = -50;
-      startY = Math.random() * window.innerHeight;
-    } else {
-      startX = window.innerWidth + 50;
-      startY = Math.random() * window.innerHeight;
-    }
+    // 시작 위치 (화면 밖)
+    let startX = Math.random() * window.innerWidth;
+    let startY = -50;
 
     photo.style.left = `${startX}px`;
     photo.style.top = `${startY}px`;
     canvas.appendChild(photo);
 
-    const t = index / total; // 0 ~ 1
-    // 지수 가속도 유지하되, 딜레이 조절
+    const t = index / total;
     let delay = maxDelay * Math.pow(1 - t, 2);
-
-    // 최대 동시 등장 제한용 추가 딜레이 계산
     const batch = Math.floor(index / maxConcurrent);
-    const batchDelay = batch * 100;  // 0.1초 간격으로 묶음마다 딜레이 증가
-
+    const batchDelay = batch * 100;
     delay += batchDelay;
 
     setTimeout(() => {
-    addBearArms(); // 팔 붙이기
-  }, 2000); // 콜라주 조금 뜬 후
-});
+      // 목표 위치로 이동
+      photo.style.transition = 'all 1.2s ease-in-out';
+      photo.style.left = `${pos.x}px`;
+      photo.style.top = `${pos.y}px`;
+      photo.style.opacity = '1';
+      photo.style.animation = 'fadeInPhoto 1.5s forwards';
 
-   
+      // 팔 한 번만 추가
+      if (!armsAdded && index > total * 0.7) {
+        armsAdded = true;
+        addBearArms();
+      }
+    }, delay);
+  });
 }
 
   function addBearArms() {
