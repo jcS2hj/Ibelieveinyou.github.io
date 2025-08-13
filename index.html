@@ -61,19 +61,6 @@
       pointer-events: none;
     }
 
-    /* 배경 사진 슬라이드 애니메이션 */
-    @keyframes changeBackground {
-      0% {
-        background-image: url('https://jcs2hj.github.io/images/11.jpg');
-      }
-      50% {
-        background-image: url('https://jcs2hj.github.io/images/22.jpg');
-      }
-      100% {
-        background-image: url('https://jcs2hj.github.io/images/33.jpg');
-      }
-    }
-
     /* 하트 애니메이션 */
     .heart {
       position: absolute;
@@ -291,7 +278,7 @@
 
 
   <script>
-  const backgroundImages = Array.from({ length: 27 }, (_, i) =>
+  const backgroundImages = Array.from({ length: 10 }, (_, i) =>
     `https://jcs2hj.github.io/images/${i + 1}.jpg`
   );
 
@@ -586,7 +573,7 @@
   const heartPositions = []; // 하트 형태 좌표 배열
   const canvas = document.getElementById('heart-canvas');
   const imageUrls = [];
-    for (let i = 1; i <= 27; i++) {
+    for (let i = 1; i <= 10; i++) {
       imageUrls.push(`https://jcs2hj.github.io/images/${i}.jpg`);
     }
     for (let i = imageUrls.length - 1; i > 0; i--) {
