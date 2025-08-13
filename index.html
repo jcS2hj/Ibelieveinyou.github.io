@@ -233,8 +233,8 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
-  <h2>어떤 동물이 가장 사랑스러운가요?</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
+  <h2>25년 본인이 남자친구 생일에 준 선물은(3글자)?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
   </div>
@@ -333,7 +333,7 @@
 
     function checkAnswer1() {
       var answer = document.getElementById('answer1').value.toLowerCase();
-      if (answer === '강아지') {
+      if (answer === '골드바') {
         document.getElementById('first-question').style.display = 'none';
         document.getElementById('second-question').style.display = 'block';
         document.getElementById('answer2').focus(); // 자동 커서 이동
@@ -341,6 +341,7 @@
         startTimer();
       } else {
         alert('틀렸어요! 다시 시도해보세요.');
+        showWrongImage(); 
       }
     }
 
@@ -355,6 +356,7 @@
 
         if (timerSeconds < 0) {
           clearInterval(timerInterval);
+          showWrongImage();
           showPrepareMessage();
         }
       }, 1000);
@@ -502,7 +504,17 @@
       checkAnswer4();  // 답변 제출 함수 호출
     }
   });
+
+<script>
+  function showWrongImage() {
+    document.getElementById('wrong-image').style.display = 'flex';
+  }
 </script>
+
+</script>
+<div id="wrong-image" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background-color:black; z-index:10000; display:flex; justify-content:center; align-items:center;">
+  <img src="https://jcs2hj.github.io/images/nn.jpg" alt="틀렸을 때 이미지" style="max-width:50%; max-height:50%;">
+</div>
   
 <div id="heart-canvas"></div>
 
