@@ -256,7 +256,6 @@
     <p style="color: red;">30글자 이상 작성해주세요!</p>
     <textarea id="answer3" name="answer3" rows="4" cols="50"></textarea><br>
     <button onclick="checkAnswer3()">제출</button>
-    <div id="timer3">남은 시간: <span id="timer3-text"></span></div>
   </div>
 
   <div id="fourth-question">
@@ -403,7 +402,7 @@
       prepareMessageDiv.style.display = 'none';
       document.getElementById('third-question').style.display = 'block';
       document.getElementById('answer3').focus(); 
-      startTimer3();
+      //startTimer3();
     }
 
     function startTimer3() {
