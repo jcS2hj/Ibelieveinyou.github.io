@@ -243,7 +243,7 @@
 </head>
 <body>
   <div id="first-question">
-  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
+  <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!</h2>
   <h2>어떤 동물이 가장 사랑스러운가요?</h2>
     <input type="text" id="answer1" name="answer1">
     <button onclick="checkAnswer1()">제출</button>
@@ -548,6 +548,26 @@
       opacity: 1;
     }
   }
+
+  @keyframes swing-arm {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(15deg); }
+    100% { transform: rotate(0deg); }
+  }
+  
+  .bear-arm {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background-image: url('https://jcs2hj.github.io/images/11.jpg');
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    animation: swing-arm 1.5s infinite ease-in-out;
+    transform-origin: top center;
+    z-index: 10001;
+  }
+    
 </style>
 
 <script>
@@ -662,6 +682,22 @@
     }, delay);
   });
 }
+
+  function addBearArms() {
+  const leftArm = document.createElement('div');
+  leftArm.className = 'bear-arm';
+  leftArm.style.top = '55%';
+  leftArm.style.left = '25%';
+
+  const rightArm = document.createElement('div');
+  rightArm.className = 'bear-arm';
+  rightArm.style.top = '55%';
+  rightArm.style.left = '65%';
+  rightArm.style.animationDelay = '0.75s'; // 서로 반대 타이밍
+
+  document.body.appendChild(leftArm);
+  document.body.appendChild(rightArm);
+}
   
 function playProposalVideo() {
   const video = document.getElementById('proposal-video');
@@ -718,6 +754,7 @@ function hideVideoAndStartCollage() {
   skipButton.style.display = 'none';
   showHeartCollage(); // 콜라주 시작
 }
+
   
 </script>
 
