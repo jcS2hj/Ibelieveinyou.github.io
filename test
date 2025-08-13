@@ -1,4 +1,4 @@
-영상 배경안지움
+곰돌이 콜라주
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -490,8 +490,6 @@
 
 <!-- 비디오 -->
 <video id="proposal-video"
-  style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
-         width:70vw; height:auto; z-index:10000; object-fit:contain; background:black;"
   preload="auto"
 >
   <source src="https://jcs2hj.github.io/images/aa.mp4" type="video/mp4">
@@ -499,15 +497,27 @@
 </video>
 
 <!-- 비디오 컨트롤러 -->
-<div id="video-controls" style="display:none; position:fixed; bottom:20px; right:20px; z-index:10001;">
-  <button onclick="togglePlayPause()">⏯️</button>
-</div>
+  <button id="skip-button"
+  style="display:none; position:fixed; top:20px; right:20px; z-index:10002; font-size:18px; padding:10px 20px; background-color:#ff4d4d; color:white; border:none; border-radius:8px; cursor:pointer;">
+  ⏩ 스킵
+</button>
   
 
 <style>
   #proposal {
     margin-top: 20px;
   }
+  
+  #proposal-video {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  background: black;
+  object-fit: contain;
+}
 
   #heart-canvas {
     position: fixed;
@@ -551,30 +561,44 @@
     'https://jcs2hj.github.io/images/33.jpg',
   ];
 
-  function generateHeartCoordinates() {
+  function generateBearCoordinates() {
   heartPositions.length = 0;
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  const centerX = w / 2;
-  const centerY = h / 2;
-  const scale = Math.min(w, h) / 32;
+  const w = window.innerWidth, h = window.innerHeight;
+  const centerX = w / 2, centerY = h / 2;
+  const scale = Math.min(w, h) / 12; // 전체 사이즈 조절
 
-  for (let angle = 0; angle < Math.PI * 2; angle += 0.05) {
-    const x = 16 * Math.pow(Math.sin(angle), 3);
-    const y = -(
-      13 * Math.cos(angle) -
-      5 * Math.cos(2 * angle) -
-      2 * Math.cos(3 * angle) -
-      Math.cos(4 * angle)
-    );
-
-    // 🔥 핵심: 테두리뿐만 아니라 하트 안쪽까지 좌표를 반복해서 찍는다.
-    for (let r = 0.2; r <= 1; r += 0.15) {  // 💡 더 자주 찍기
-      const offsetX = (x * r + (Math.random() * 0.3 - 0.15)) * scale + centerX;
-      const offsetY = (y * r + (Math.random() * 0.3 - 0.15)) * scale + centerY;
-      heartPositions.push({ x: offsetX, y: offsetY });
+  // 원 좌표 생성기 (밀도 조절 포함)
+  function addCircle(cx, cy, r, density = 0.2, jitter = 0.2) {
+    for (let angle = 0; angle < Math.PI * 2; angle += 0.1) {
+      for (let rad = 0.3; rad <= 1; rad += density) {
+        const x = cx + Math.cos(angle) * r * rad + (Math.random() * jitter - jitter / 2);
+        const y = cy + Math.sin(angle) * r * rad + (Math.random() * jitter - jitter / 2);
+        heartPositions.push({
+          x: x * scale + centerX,
+          y: y * scale + centerY
+        });
+      }
     }
   }
+
+  // ░ 곰돌이 모양 정의 ░
+
+  // 귀 (작고 위쪽)
+  addCircle(-2, -4, 0.8, 0.15); // 왼쪽 귀
+  addCircle(2, -4, 0.8, 0.15);  // 오른쪽 귀
+
+  // 머리 (크고 중심 위)
+  addCircle(0, -2.2, 2.2, 0.18);  // 머리
+
+  // 눈 (작고 밀도 높게)
+  addCircle(-0.8, -2.5, 0.3, 0.1, 0.05);
+  addCircle(0.8, -2.5, 0.3, 0.1, 0.05);
+
+  // 코 (가운데 작게)
+  addCircle(0, -1.5, 0.3, 0.1, 0.03);
+
+  // 몸통 (더 크고 아래)
+  addCircle(0, 1.5, 3.5, 0.18); // 몸통
 }
 
  function showHeartCollage() {
@@ -584,7 +608,7 @@
   // 2. 배경 검은색으로 설정
   canvas.style.backgroundColor = 'black';
    
-  generateHeartCoordinates();
+  generateBearCoordinates();
  
 
   const total = heartPositions.length;
@@ -643,30 +667,59 @@
   
 function playProposalVideo() {
   const video = document.getElementById('proposal-video');
-  const controls = document.getElementById('video-controls');
-  
+  const skipButton = document.getElementById('skip-button');
+
   video.style.display = 'block';
-  controls.style.display = 'block';
+  skipButton.style.display = 'block';  // 스킵 버튼 보이기
   video.muted = false;
+
+  // 영상이 로드되면 크기 계산 시작
+  video.onloadedmetadata = function () {
+    const videoRatio = video.videoWidth / video.videoHeight;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    // 화면 기준 비율 유지하며 최대 70%로
+    const maxWidth = windowWidth * 0.7;
+    const maxHeight = windowHeight * 0.7;
+
+    let finalWidth, finalHeight;
+
+    // 화면 비율에 따라 가로 또는 세로 기준으로 조정
+    if (maxWidth / videoRatio <= maxHeight) {
+      // 가로 기준
+      finalWidth = maxWidth;
+      finalHeight = maxWidth / videoRatio;
+    } else {
+      // 세로 기준
+      finalHeight = maxHeight;
+      finalWidth = maxHeight * videoRatio;
+    }
+
+    video.style.width = finalWidth + 'px';
+    video.style.height = finalHeight + 'px';
+  };
+
   video.play();
 
-  // 영상 끝나면 하트 콜라주
   video.onended = function () {
-    video.style.display = 'none';
-    controls.style.display = 'none';
-    showHeartCollage();
+   hideVideoAndStartCollage();
+  };
+   // 스킵 버튼 클릭 이벤트
+  skipButton.onclick = function () {
+    video.pause();
+    hideVideoAndStartCollage();
   };
 }
-
-function togglePlayPause() {
+  // 영상 종료 시 공통 처리 함수
+function hideVideoAndStartCollage() {
   const video = document.getElementById('proposal-video');
-  if (video.paused) {
-    video.play();
-  } else {
-    video.pause();
-  }
+  const skipButton = document.getElementById('skip-button');
+
+  video.style.display = 'none';
+  skipButton.style.display = 'none';
+  showHeartCollage(); // 콜라주 시작
 }
-  
   
 </script>
 
