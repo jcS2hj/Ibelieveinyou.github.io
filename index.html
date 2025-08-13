@@ -465,6 +465,9 @@
       document.getElementById('fourth-question').style.display = 'none';
       prepareMessageDiv.style.display = 'block';
 
+      showFourthQuestion();
+
+      /*
       prepareTimerInterval = setInterval(function() {
         document.getElementById('prepare-timer').style.display = 'block';
         document.getElementById('prepare-timer-text').textContent = prepareTimeSeconds + '초';
@@ -475,6 +478,7 @@
           showFourthQuestion();
         }
       }, 1000);
+      */
     }
 
     function showFourthQuestion() {
