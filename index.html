@@ -232,10 +232,11 @@
   </style>
 </head>
 <body>
-<div id="wrong-image" style="display: none; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;">
-  <img src="https://jcs2hj.github.io/images/nn.jpg" alt="틀렸을 때 이미지" style="width: 100px; height: auto; border: 2px solid red; border-radius: 8px;">
+
+  <div id="wrong-image" style="display:none; width: 100px; margin: 0 auto;">
+  <img src="https://jcs2hj.github.io/images/nn.jpg" alt="틀렸을 때 이미지" style="width: 100%; border: 2px solid red; border-radius: 8px;">
 </div>
-  
+
   <div id="first-question">
   <h2>제 <span class="highlight">여자친구</span>라면 답할 수 있는 문제!!!</h2>
   <h2>25년 본인이 남자친구 생일에 준 선물은(3글자)?</h2>
@@ -258,6 +259,11 @@
     <button onclick="checkAnswer3()">제출</button>
   </div>
 
+
+  <div id="wrong-image" style="display:none; width: 100px; margin: 0 auto;">
+  <img src="https://jcs2hj.github.io/images/nn.jpg" alt="틀렸을 때 이미지" style="width: 100%; border: 2px solid red; border-radius: 8px;">
+</div>
+  
   <div id="fourth-question">
     <h2>........ 사랑해라고 적어주세요....</h2>
     <textarea id="answer4" name="answer4" rows="4" cols="50"></textarea><br>
@@ -327,6 +333,23 @@
     // 일정 시간 간격으로 하트 생성
     setInterval(createHeart, 700);
 
+    
+    function showWrongImageAbove(questionId) {
+      const wrongImage = document.getElementById('wrong-image');
+      const questionDiv = document.getElementById(questionId);
+    
+      if (!questionDiv) return;
+    
+      // 질문 요소 바로 앞에 wrong-image 요소를 삽입
+      questionDiv.parentNode.insertBefore(wrongImage, questionDiv);
+    
+      // 이미지 보이기
+      wrongImage.style.display = 'block';
+    }
+        function hideWrongImage() {
+      document.getElementById('wrong-image').style.display = 'none';
+    }
+    
     function checkAnswer1() {
       var answer = document.getElementById('answer1').value.toLowerCase();
       if (answer === '골드바') {
@@ -334,10 +357,11 @@
         document.getElementById('second-question').style.display = 'block';
         document.getElementById('answer2').focus(); // 자동 커서 이동
         alert('생일 선물로 아주 멋진것을 받아버렸죠!!!');
+        hideWrongImage();
         startTimer();
       } else {
         alert('틀렸어요! 다시 시도해보세요.');
-        showWrongImage(); 
+        showWrongImageAbove('first-question');
       }
     }
 
@@ -395,7 +419,7 @@
       prepareMessageDiv.style.display = 'none';
       document.getElementById('third-question').style.display = 'block';
       document.getElementById('answer3').focus(); 
-      //startTimer3();
+      startTimer3();
     }
 
     function startTimer3() {
@@ -451,6 +475,7 @@
     function showFourthQuestion() {
       var prepareMessageDiv = document.getElementById('prepare-message');
       prepareMessageDiv.style.display = 'none';
+      showWrongImageAbove('first-question');
       document.getElementById('fourth-question').style.display = 'block';
       document.getElementById('answer4').focus();
     }
@@ -462,6 +487,7 @@
         document.getElementById('fourth-question').style.display = 'none';
         document.getElementById('result-image').style.display = 'block';
         document.getElementById('proposal').style.display = 'block';
+        hideWrongImage();
       } else {
         alert('정답이 아닙니다. "사랑해"를 포함하여 작성해주세요.');
       }
