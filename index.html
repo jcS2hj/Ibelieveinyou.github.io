@@ -289,13 +289,6 @@
   let currentImageIndex = 0;
 
   function changeBackgroundImage() {
-    const bodyBefore = document.querySelector('body::before');
-    // CSS에서 직접 못 접근하므로 body 스타일에 backgroundImage 직접 지정
-    document.body.style.setProperty(
-      '--background-image-url',
-      `url('${backgroundImages[currentImageIndex]}')`
-    );
-
     document.body.style.backgroundImage = `url('${backgroundImages[currentImageIndex]}')`;
 
     currentImageIndex = (currentImageIndex + 1) % backgroundImages.length;
