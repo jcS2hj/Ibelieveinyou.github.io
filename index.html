@@ -295,7 +295,7 @@
 
 
   <script>
-  const backgroundImages = Array.from({ length: 10 }, (_, i) =>
+  const backgroundImages = Array.from({ length: 27 }, (_, i) =>
     `https://jcs2hj.github.io/images/${i + 1}.jpg`
   );
 
@@ -320,8 +320,8 @@
       document.getElementById('answer1').focus(); // 첫 번째 질문이 뜨면 자동으로 커서가 answer1에 위치
     };
 
-    var timerSeconds = 6;
-    var prepareTimeSeconds = 10;
+    var timerSeconds = 5;
+    var prepareTimeSeconds = 5;
     var timerInterval;
     var prepareTimerInterval;
 
@@ -386,7 +386,7 @@
           showWrongImage();
           showPrepareMessage();
         }
-      }, 1000);
+      }, 500);
     }
 
     function checkAnswer2() {
@@ -418,7 +418,7 @@
           clearInterval(prepareTimerInterval);
           showThirdQuestion();
         }
-      }, 1000);
+      }, 500);
     }
   
     function showThirdQuestion() {
@@ -433,7 +433,7 @@
       var timerElement = document.getElementById('timer3');
       var timerTextElement = document.getElementById('timer3-text');
       timerElement.style.display = 'block';
-      timerSeconds = 10;
+      timerSeconds = 5;
 
       timerInterval = setInterval(function() {
         timerTextElement.textContent = timerSeconds + '초';
@@ -443,7 +443,7 @@
           clearInterval(timerInterval);
           showPrepareMessage2();
         }
-      }, 1000);
+      }, 500);
     }
 
     function checkAnswer3() {
@@ -615,7 +615,7 @@
   const heartPositions = []; // 하트 형태 좌표 배열
   const canvas = document.getElementById('heart-canvas');
   const imageUrls = [];
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 27; i++) {
       imageUrls.push(`https://jcs2hj.github.io/images/${i}.jpg`);
     }
     for (let i = imageUrls.length - 1; i > 0; i--) {
