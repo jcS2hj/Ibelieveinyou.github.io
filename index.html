@@ -677,7 +677,7 @@
   const maxDelay = 1000;  // 첫 이미지 딜레이 (1초)
   const minDelay = 200;    // 마지막 이미지 딜레이 (0.05초)
 
-  const maxConcurrent = 10; // 동시에 나타날 수 있는 최대 사진 개수
+  const maxConcurrent = 7; // 동시에 나타날 수 있는 최대 사진 개수
   let activeCount = 0;
 
   heartPositions.forEach((pos, index) => {
@@ -715,7 +715,7 @@
 
     // 최대 동시 등장 제한용 추가 딜레이 계산
     const batch = Math.floor(index / maxConcurrent);
-    const batchDelay = batch * 100;  // 0.1초 간격으로 묶음마다 딜레이 증가
+    const batchDelay = batch * 10;  // 0.1초 간격으로 묶음마다 딜레이 증가
 
     delay += batchDelay;
 
