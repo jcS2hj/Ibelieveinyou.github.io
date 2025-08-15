@@ -320,8 +320,8 @@
       document.getElementById('answer1').focus(); // 첫 번째 질문이 뜨면 자동으로 커서가 answer1에 위치
     };
 
-    var timerSeconds = 5;
-    var prepareTimeSeconds = 5;
+    var timerSeconds = 7;
+    var prepareTimeSeconds = 7;
     var timerInterval;
     var prepareTimerInterval;
 
@@ -386,7 +386,7 @@
           showWrongImage();
           showPrepareMessage();
         }
-      }, 500);
+      }, 1000);
     }
 
     function checkAnswer2() {
@@ -418,7 +418,7 @@
           clearInterval(prepareTimerInterval);
           showThirdQuestion();
         }
-      }, 500);
+      }, 1000);
     }
   
     function showThirdQuestion() {
@@ -443,7 +443,7 @@
           clearInterval(timerInterval);
           showPrepareMessage2();
         }
-      }, 500);
+      }, 1000);
     }
 
     function checkAnswer3() {
