@@ -630,7 +630,7 @@
   const scale = Math.min(w, h) / 12; // 전체 사이즈 조절
 
   // 원 좌표 생성기 (밀도 조절 포함)
-  function addCircle(cx, cy, r, density = 0.2, jitter = 0.2) {
+  function addCircle(cx, cy, r, density = 0.4, jitter = 0.2) {
     for (let angle = 0; angle < Math.PI * 2; angle += 0.1) {
       for (let rad = 0.3; rad <= 1; rad += density) {
         const x = cx + Math.cos(angle) * r * rad + (Math.random() * jitter - jitter / 2);
@@ -715,7 +715,7 @@
 
     // 최대 동시 등장 제한용 추가 딜레이 계산
     const batch = Math.floor(index / maxConcurrent);
-    const batchDelay = batch * 10;  // 0.1초 간격으로 묶음마다 딜레이 증가
+    const batchDelay = batch * 100;  // 0.1초 간격으로 묶음마다 딜레이 증가
 
     delay += batchDelay;
 
